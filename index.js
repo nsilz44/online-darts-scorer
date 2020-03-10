@@ -3,12 +3,12 @@ var legal3DartCloses = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 class PlayerScore {
   constructor (playername, startScore) {
     startScore = +startScore
-    this.score = startScore
+    this.currentScore = startScore
     this.name = playername
     this.legswon = 0
     this.darts_thrown = 0
-    this.total_score = 0
-    this.scorecard = []
+    this.totalScore = 0
+    this.scorecard1 = []
     this.average = 0
   }
 
@@ -17,22 +17,25 @@ class PlayerScore {
     console.log(input)
     if (!(input in legalScores)) {
       alert('Please input a legal score')
-    } else if (input > PlayerScore.score || PlayerScore.score - input === 1) {
+    } else if (input > this.currentScore || this.currentScore - input === 1) {
       alert('Flair Bust')
-    } else if (input < PlayerScore.score) {
-      PlayerScore.score = PlayerScore.score - input
-      PlayerScore.scorecard.push(input)
-      PlayerScore.darts_thrown = PlayerScore.darts_thrown + 3
-      PlayerScore.total_score = PlayerScore.total_score + input
+    } else if (input < this.currentScore) {
+      this.currentScore = this.currentScore - input
+      this.scorecard1.push(input)
+      this.dartsThrown = this.dartsThrown + 3
+      this.totalScore = this.totalScore + input
+      document.getElementById('score').innerText = this.currentScore
+      document.getElementById('inputscore').value = ''
     } else if (!(input in legal3DartCloses)) {
     } else {
-      PlayerScore.score = 501
-      PlayerScore.scorecard.push(input)
-      PlayerScore.total_score = PlayerScore.total_score + input
-      alert('NICE ONE')
+      this.currentScore = this.currentScore - input
+      this.totalScore = this.totalScore + input
+      document.getElementById('score').innerText = this.currentScore
+      document.getElementById('inputscore').value = ''
+      document.getElementById('inputscore').focus()
     }
   }
 }
-var player1 = new PlayerScore('player1', 301)
-document.getElementById('score').innerText = player1.score
+var player1 = new PlayerScore('playert1', 301)
+document.getElementById('score').innerText = player1.currentScore
 document.getElementById('average').innerText = player1.average
