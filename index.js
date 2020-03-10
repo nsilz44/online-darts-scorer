@@ -12,8 +12,9 @@ class PlayerScore {
   }
 
   scorecheck (input) {
+    input = + input
     console.log(input)
-    if (input in legalScores) {
+    if (!(input in legalScores)) {
       alert('Please input a legal score')
     } else if (input > PlayerScore.score || PlayerScore.score - input === 1) {
       alert('Flair Bust')
@@ -34,9 +35,5 @@ class PlayerScore {
 }
 
 var player1 = new PlayerScore('player1', 301)
-
-var inpScore1 = document.getElementById('inputscore').value
-inpScore1 = +inpScore1
-document.getElementById('submit1').addEventListener('click', player1.scorecheck(inpScore1))
 document.getElementById('score').innerText = player1.score
 document.getElementById('average').innerText = player1.average
