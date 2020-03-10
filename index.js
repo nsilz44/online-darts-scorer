@@ -14,7 +14,6 @@ class PlayerScore {
 
   scorecheck (input) {
     input = +input
-    console.log(input)
     if (!(input in legalScores)) {
       alert('Please input a legal score')
     } else if (input > this.currentScore || this.currentScore - input === 1) {
@@ -24,18 +23,17 @@ class PlayerScore {
       this.scorecard1.push(input)
       this.dartsThrown = this.dartsThrown + 3
       this.totalScore = this.totalScore + input
-      document.getElementById('score').innerText = this.currentScore
-      document.getElementById('inputscore').value = ''
     } else if (!(input in legal3DartCloses)) {
     } else {
       this.currentScore = this.currentScore - input
       this.totalScore = this.totalScore + input
-      document.getElementById('score').innerText = this.currentScore
-      document.getElementById('inputscore').value = ''
-      document.getElementById('inputscore').focus()
     }
+    this.average = this.totalScore * 3 / this.dartsThrown
+    document.getElementById('score').innerText = this.currentScore
+    document.getElementById('average').innerText = this.average
+    document.getElementById('inputscore').value = ''
+    document.getElementById('inputscore').focus()
   }
 }
-var player1 = new PlayerScore('playert1', 301)
-document.getElementById('score').innerText = player1.currentScore
-document.getElementById('average').innerText = player1.average
+const player1 = new PlayerScore('playert1', 301)
+document.getElementById('name1').innerText = player1.name
