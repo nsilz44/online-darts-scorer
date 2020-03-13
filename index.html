@@ -7,16 +7,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    
+    <link rel="stylesheet" href="styles.css">
   </head>
   
   <body>
-    <div class="container-fluid shadow p-4 mb-4 bg-white">
+    <div class="container-fluid p-4 mb-4" >
       <h1 class="text-center">TungstenScoring</h1> 
       <p class="text-center">Online darts scoring</p> 
     </div>
-    <div class="container p-1 m-2" id= "newMatch" >
-      <label for="matchID">Create new match</label>
+    
+    <div class="container rounded-lg" id= "newMatch" >
+      <form for="matchID">
+      <label>Create new match</label>
+      </form>
     </div>
     <div class="container">
       <h1 id="name1">Name</h1>
