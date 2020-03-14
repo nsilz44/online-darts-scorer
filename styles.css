@@ -1,6 +1,6 @@
-h1{
-    color: limegreen;
-    }
 body{
     background-color: slategrey
+}
+#newMatch{
+    background-color: crimson;
 }

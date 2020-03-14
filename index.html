@@ -16,12 +16,38 @@
       <p class="text-center">Online darts scoring</p> 
     </div>
     
-    <div class="container rounded-lg" id= "newMatch" >
-      <form for="matchID">
-      <label>Create new match</label>
-      </form>
+    <div class="container" id= "newMatch" >
+      <div class="row">
+        <div class="col-sm"><h5>Create new match</h5></div>
+        <div class="col-sm"><h6>Player1 Name:</h6><input></input></div>
+        <div class="col-sm"><h6>Player2 Name:</h6><input></input></div>
+        <div class="col-sm">
+          <select id="startscore" value="501">
+            <option value="301">301</option>
+            <option value="501">501</option>
+            <option value="701">701</option>
+            <option value="1001">1001</option>
+          </select></div>
+      </div>
+      <div class="row">
+        <div class="col-sm"><h6>First to</h6>
+          <select id="sets">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <h6>sets</h6>
+        </div>
+        <div class="col-sm"><h6>Best out of</h6>
+          <select id="legs">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+          </select></div>
+      </div>
     </div>
-    <div class="container">
+    <div class="container" id="Game">
       <h1 id="name1">Name</h1>
       <h1>PLAYER SCORE:</h1>
       <h3 id = "score">501</h3>
