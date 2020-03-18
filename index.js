@@ -46,5 +46,6 @@ class PlayerScore {
     document.getElementById('inputscore').focus()
   }
 }
-const player1 = new PlayerScore('playert1', 301)
+const player1 = new PlayerScore('playert1', 501)
+document.getElementById('inputscore').focus()
 document.getElementById('name1').innerText = player1.name
