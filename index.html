@@ -11,16 +11,17 @@
   </head>
   
   <body>
+    
     <div class="container-fluid p-4 mb-4" >
       <h1 class="text-center">TungstenScoring</h1> 
       <p class="text-center">Online darts scoring</p> 
     </div>
     
-    <div class="container" id= "newMatch" >
+    <div class="container" id= "newmatch" >
       <div class="row">
         <div class="col-sm"><h5>Create new match</h5></div>
-        <div class="col-sm"><h6>Player1 Name:</h6><input></input></div>
-        <div class="col-sm"><h6>Player2 Name:</h6><input></input></div>
+        <div class="col-sm" id="p1name"><h6>Player1 Name:</h6><input></input></div>
+        <div class="col-sm" id="p2name"><h6>Player2 Name:</h6><input></input></div>
         <div class="col-sm">
           <select id="startscore">
             <option value="301">301</option>
@@ -38,23 +39,53 @@
           </select>
           <h6>sets</h6>
         </div>
-        <div class="col-sm"><h6>Best out of</h6>
+        <div class="col-sm"><h6>First to</h6>
           <select id="legs">
-            <option value="1">1</option>
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
           </select></div>
       </div>
+      <button type="button" id="newgame" onclick="matchmaker()">Create match</button>
     </div>
     <div class="container" id="Game">
-      <h1 id="name1">Name</h1>
-      <h1>PLAYER SCORE:</h1>
-      <h3 id = "score">501</h3>
+      <h3>First to 1 set out of 5 legs</h3>
+      <div class="row">
+        <div class="col"><h3 id="p1setswon">0 sets</h3></div>
+        <div class="col"></div>
+        <div class="col"><h3 id="p2setswon">0 sets</h3></div>
+      </div>
+      <div class="row">
+        <div class="col"><h3 id="p1Legswon">0 legs</h3></div>
+        <div class="col"></div>
+        <div class="col"><h3 id="p2Legswon">0 legs</h3></div>
+      </div>
+      <div class="row">
+        <div class="col"><h1 id="name1">Player1</h1></div>
+        <div class="col"></div>
+        <div class="col"><h1 id="name2">Player2</h1></div>
+      </div>
+      <div class="row">
+        <div class="col"><h1 id ="score1">501</h1></div>
+        <div class="col"></div>
+        <div class="col"><h1 id ="score2">501</h1></div>
+      </div>  
       <input type="text" id="inputscore" ></input>
-      <button type="button" id="submit1" onclick="player1.scorecheck(inputscore.value)">Submit score</button>
-      <p>Average</p><h6 id= "average">00.00</h6>
+      <button type="button" id="submit" onclick="natch.turncheck(inputscore.value)">Submit score</button>
     </div>
+    <div class="container" id="stats">
+      <div class="row">
+        <div class="col"><h2 id ="average1">00.00</h2></div>
+        <div class="col"><h2> AVERAGE</h2></div>
+        <div class="col"><h2 id ="average2">00.00</h2></div>
+      </div>
+    </div>
+    
   </body>
   <script src="index.js"> </script>
+  
 </html>
