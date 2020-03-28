@@ -14,12 +14,31 @@ class Match {
     this.p2Legs = 0
     this.p1Sets = 0
     this.p2Sets = 0
+    this.p1TotalScore = 0
+    this.p2TotalScore = 0
+    this.p1TotalDarts = 0
+    this.p2TotalDarts = 0
+    this.p1LegDarts = 0
+    this.p2LegDarts = 0
+    this.p1Average = 0
+    this.p2Average = 0
     this.startScore = startscore
     this.setsRequired = sets
     this.legsRequired = legs
     this.legStart = 1
     this.SetStart = 1
     this.turn = 1
+  }
+
+  updateScores () {
+    this.p1Average = (this.p1TotalScore * 3) / this.p1TotalDarts
+    this.p2Average = (this.p2TotalScore * 3) / this.p2TotalDarts
+    document.getElementById('score1').innerText = this.p1Score
+    document.getElementById('score2').innerText = this.p2Score
+    document.getElementById('average1').innerText = Number(this.p1Average).toFixed(2)
+    document.getElementById('average2').innerText = Number(this.p2Average).toFixed(2)
+    document.getElementById('inputscore').value = ''
+    document.getElementById('inputscore').focus()
   }
 
   // Checks whos turn it is
@@ -49,10 +68,7 @@ class Match {
       this.p2Score = this.startScore
       this.situation1()
     }
-    document.getElementById('score1').innerText = this.p1Score
-    // document.getElementById('average1').innerText = Number(this.average).toFixed(2)
-    document.getElementById('inputscore').value = ''
-    document.getElementById('inputscore').focus()
+    this.updateScores()
   }
 
   scorecheck2 (input) {
@@ -74,12 +90,10 @@ class Match {
       this.p2Score = this.startScore
       this.situation2()
     }
-    document.getElementById('score2').innerText = this.p2Score
-    // document.getElementById('average2').innerText = Number(this.average).toFixed(2)
-    document.getElementById('inputscore').value = ''
-    document.getElementById('inputscore').focus()
+    this.updateScores()
   }
 
+  // Player 1 won the leg
   situation1 () {
     this.p1Legs = this.p1Legs + 1
     if (this.p1Legs === this.legsRequired) {
@@ -98,12 +112,23 @@ class Match {
         }
       }
     }
+    this.turn = this.legStart
+    if (this.legStart === 1) {
+      this.legStart = 2
+    } else {
+      this.legStart = 1
+    }
+    document.getElementById('p1setswon').innerText = this.p1Sets
+    document.getElementById('p2setswon').innerText = this.p2Sets
+    document.getElementById('p1Legswon').innerText = this.p1Legs
+    document.getElementById('p2Legswon').innerText = this.p2Legs
   }
 
+  // Player 2 won the leg
   situation2 () {
-    this.p2Legs++
+    this.p2Legs = this.p2Legs + 1
     if (this.p2Legs === this.legsRequired) {
-      this.p2Sets++
+      this.p2Sets = this.p2Sets + 1
       this.p1Legs = 0
       this.p2Legs = 0
       if (this.p2Sets === this.setsRequired) {
@@ -118,31 +143,34 @@ class Match {
         }
       }
     }
-
     this.turn = this.legStart
     if (this.legStart === 1) {
       this.legStart = 2
     } else {
       this.legStart = 1
     }
+    document.getElementById('p1setswon').innerText = this.p1Sets
+    document.getElementById('p2setswon').innerText = this.p2Sets
+    document.getElementById('p1Legswon').innerText = this.p1Legs
+    document.getElementById('p2Legswon').innerText = this.p2Legs
   }
 }
 let natch = new Match('p1name', 'p2name', 501, 1, 1)
 function matchmaker () {
-  var p1name = document.getElementById('p1name').value
-  var p2name = document.getElementById('p2name').value
-  var startScore = document.getElementById('startscore').value
-  var setsRequired = document.getElementById('sets').value
-  var legsRequired = document.getElementById('legs').value
+  const p1name = document.getElementById('p1name').value
+  const p2name = document.getElementById('p2name').value
+  const startScore = document.getElementById('startscore').value
+  const setsRequired = document.getElementById('sets').value
+  const legsRequired = document.getElementById('legs').value
   natch.p1Name = p1name
   natch.p2Name = p2name
   natch.p1Score = startScore
   natch.p2Score = startScore
   natch.legsRequired = legsRequired
   natch.setsRequired = setsRequired
-  console.log(p1name)
-  document.getElementById('p1name').innerText = p1name
-  document.getElementById('p2name').innerText = p2name
+  console.log(document.getElementById('p1name').value)
+  document.getElementById('name1').innerText = p1name
+  document.getElementById('name2').innerText = p2name
   document.getElementById('score1').innerText = startScore
   document.getElementById('score2').innerText = startScore
   document.getElementById('newmatch').style.display = 'none'

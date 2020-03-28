@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   
-  <body>
-    
+  <body>  
     <div class="container-fluid p-4 mb-4" >
       <h1 class="text-center">TungstenScoring</h1> 
       <p class="text-center">Online darts scoring</p> 
@@ -20,8 +19,8 @@
     <div class="container" id= "newmatch" >
       <div class="row">
         <div class="col-sm"><h5>Create new match</h5></div>
-        <div class="col-sm" id="p1name"><h6>Player1 Name:</h6><input></input></div>
-        <div class="col-sm" id="p2name"><h6>Player2 Name:</h6><input></input></div>
+        <div class="col-sm" ><h6>Player1 Name:</h6><input id="p1name"></input></div>
+        <div class="col-sm" ><h6>Player2 Name:</h6><input id="p2name"></input></div>
         <div class="col-sm">
           <select id="startscore">
             <option value="301">301</option>
@@ -55,14 +54,14 @@
     <div class="container" id="Game">
       <h3>First to 1 set out of 5 legs</h3>
       <div class="row">
-        <div class="col"><h3 id="p1setswon">0 sets</h3></div>
-        <div class="col"></div>
-        <div class="col"><h3 id="p2setswon">0 sets</h3></div>
+        <div class="col"><h6 id="p1setswon">0</h6></div>
+        <div class="col">SETS WON</div>
+        <div class="col"><h6 id="p2setswon">0</h6></div>
       </div>
       <div class="row">
-        <div class="col"><h3 id="p1Legswon">0 legs</h3></div>
-        <div class="col"></div>
-        <div class="col"><h3 id="p2Legswon">0 legs</h3></div>
+        <div class="col"><h6 id="p1Legswon">0</h6></div>
+        <div class="col"><h6>LEGS WON</h6></div>
+        <div class="col"><h6 id="p2Legswon">0</h6></div>
       </div>
       <div class="row">
         <div class="col"><h1 id="name1">Player1</h1></div>
@@ -84,7 +83,6 @@
         <div class="col"><h2 id ="average2">00.00</h2></div>
       </div>
     </div>
-    
   </body>
   <script src="index.js"> </script>
   
