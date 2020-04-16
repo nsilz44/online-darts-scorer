@@ -28,6 +28,7 @@ class Match {
     this.legStart = 1
     this.SetStart = 1
     this.turn = 1
+    this.scorecard = []
   }
 
   updateScores () {
@@ -61,9 +62,11 @@ class Match {
     } else if (input < this.p1Score) {
       this.p1Score = this.p1Score - input
       this.turn = 2
+      this.scorecard.push(input)
     } else if (!(input in legal3DartCloses)) {
       alert('Not a legal close')
     } else {
+      this.scorecard.push(input)
       this.p1Score = this.startScore
       this.p2Score = this.startScore
       this.situation1()
@@ -81,11 +84,13 @@ class Match {
     } else if (input < this.p2Score) {
       this.p2Score = this.p2Score - input
       this.turn = 1
+      this.scorecard.push(input)
     } else if (!(input in legal3DartCloses)) {
       alert('Not a legal close')
     } else {
       // Player2 has closed
       // resets score of both players
+      this.scorecard.push(input)
       this.p1Score = this.startScore
       this.p2Score = this.startScore
       this.situation2()
