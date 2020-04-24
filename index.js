@@ -1,4 +1,4 @@
-var legalScores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 164, 165, 167, 168, 170, 171, 174, 177, 180, 180, 180, 180, 180];
+var legalScores = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 164, 165, 167, 168, 170, 171, 174, 177, 180];
 var legal3DartCloses = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 160, 161, 164, 167, 170];
 
 class Match {
@@ -22,13 +22,21 @@ class Match {
     this.p2LegDarts = 0;
     this.p1Average = 0;
     this.p2Average = 0;
+    this.p1180s = 0;
+    this.p2180s = 0;
+    this.p1140s = 0;
+    this.p2140s = 0;
+    this.p1100s = 0;
+    this.p2100s = 0;
     this.startScore = startscore;
     this.setsRequired = sets;
     this.legsRequired = legs;
     this.legStart = 1;
     this.SetStart = 1;
     this.turn = 1;
-    this.scorecard = [];
+    this.inputCard = [];
+    this.turnCard = [];
+    this.scoreCard = [];
   }
 
   updateScores () {
@@ -40,6 +48,13 @@ class Match {
     document.getElementById('average2').innerText = Number(this.p2Average).toFixed(2);
     document.getElementById('inputscore').value = '';
     document.getElementById('inputscore').focus();
+    if (this.turn === 1) {
+      document.getElementById('arrow1').style.display = 'inline-block';
+      document.getElementById('arrow2').style.display = 'none';
+    } else {
+      document.getElementById('arrow2').style.display = 'inline-block';
+      document.getElementById('arrow1').style.display = 'none';
+    }
   }
 
   // Checks whos turn it is
@@ -51,24 +66,33 @@ class Match {
     }
   }
 
+/* eslint-env browser */
   // Checking if score is valid for player1
   scorecheck1 (input) {
     input = +input;
-    if (!(input in legalScores)) {
+    if (legalScores.includes(input) === false) {
       alert('Please input a legal score');
     } else if (input > this.p1Score || this.p1Score - input === 1) {
-      alert('Bust');
-      this.turn = 2;
+      alert('Please input a legal score');
     } else if (input < this.p1Score) {
       this.p1Score = this.p1Score - input;
+      this.p1TotalScore = this.p1TotalScore + input;
+      this.p1TotalDarts = this.p1TotalDarts + 3;
+      this.turnCard.push(this.turn);
       this.turn = 2;
-      this.scorecard.push(input);
-    } else if (!(input in legal3DartCloses)) {
+      this.inputCard.push(input);
+      this.scoreCard.push(this.p1Score);
+    } else if (legal3DartCloses.includes(input) === false) {
       alert('Not a legal close');
+      // Closed
     } else {
-      this.scorecard.push(input);
+      this.p1TotalScore = this.p1TotalScore + input;
+      this.p1TotalDarts = this.p1TotalDarts + 3;
+      this.inputCard.push(input);
       this.p1Score = this.startScore;
       this.p2Score = this.startScore;
+      this.scoreCard.push(this.p1Score);
+      this.scoreCard.push(this.p2Score);
       this.situation1();
     }
     this.updateScores();
@@ -76,16 +100,19 @@ class Match {
 
   scorecheck2 (input) {
     input = +input;
-    if (!(input in legalScores)) {
+    if (legalScores.includes(input) === false) {
       alert('Please input a legal score');
     } else if (input > this.p2Score || this.p1Score - input === 1) {
-      alert('Bust');
-      this.turn = 1;
+      alert('please input a legal score');
     } else if (input < this.p2Score) {
       this.p2Score = this.p2Score - input;
+      this.p2TotalScore = this.p2TotalScore + input;
+      this.p2TotalDarts = this.p2TotalDarts + 3;
+      this.turnCard.push(this.turn);
       this.turn = 1;
-      this.scorecard.push(input);
-    } else if (!(input in legal3DartCloses)) {
+      this.scoreCard.push(this.p2Score);
+      this.inputCard.push(input);
+    } else if (legal3DartCloses.includes(input) === false) {
       alert('Not a legal close');
     } else {
       // Player2 has closed
@@ -160,24 +187,93 @@ class Match {
     document.getElementById('p2Legswon').innerText = this.p2Legs;
   }
 }
+function home () {
+  document.getElementById('home').style.display = 'block';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'none';
+}
+function creatematch () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'block';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'none';
+}
+function continuematch () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'block';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'none';
+}
+function currentmatch () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'none';
+}
+function practicefunc () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'block';
+  document.getElementById('settings').style.display = 'none';
+}
+function settings () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'block';
+}
+
 const natch = new Match('p1name', 'p2name', 501, 1, 1);
 function matchmaker () {
-  const p1name = document.getElementById('p1name').value;
-  const p2name = document.getElementById('p2name').value;
-  const startScore = document.getElementById('startscore').value;
-  const setsRequired = document.getElementById('sets').value;
-  const legsRequired = document.getElementById('legs').value;
-  natch.p1Name = p1name;
-  natch.p2Name = p2name;
-  natch.p1Score = startScore;
-  natch.p2Score = startScore;
-  natch.legsRequired = legsRequired;
-  natch.setsRequired = setsRequired;
-  console.log(document.getElementById('p1name').value);
-  document.getElementById('name1').innerText = p1name;
-  document.getElementById('name2').innerText = p2name;
-  document.getElementById('score1').innerText = startScore;
-  document.getElementById('score2').innerText = startScore;
-  document.getElementById('newmatch').style.display = 'none';
+  natch.p1Name = document.getElementById('p1name').value;
+  natch.p2Name = document.getElementById('p2name').value;
+  natch.startScore = document.getElementById('startscore').value;
+  natch.setsRequired = document.getElementById('sets').value;
+  natch.legsRequired = document.getElementById('legs').value;
+  natch.p1Score = natch.startScore;
+  natch.p2Score = natch.startScore;
+  document.getElementById('name1').innerText = natch.p1Name;
+  document.getElementById('name2').innerText = natch.p2Name;
+  document.getElementById('score1').innerText = natch.p1Score;
+  document.getElementById('score2').innerText = natch.p2Score;
+  document.getElementById('newMatch').style.display = 'none';
   document.getElementById('inputscore').focus();
 }
+  class Practice {
+    constructor () {
+      this.totalScore = 0;
+      this.dartsUsed = 0;
+      this.average = 0;
+    }
+
+    updateScores () {
+      document.getElementById('scorePractice').innerText = this.totalScore;
+      document.getElementById('dartsPractice').innerText = this.dartsUsed;
+      document.getElementById('averagePractice').innerText = Number(this.average).toFixed(2);
+      document.getElementById('inputPractice').value = '';
+      document.getElementById('inputPractice').focus();
+    }
+
+    score (input) {
+      input = +input;
+      this.totalScore = this.totalScore + input;
+      this.dartsUsed = this.dartsUsed + 3;
+      this.average = this.totalScore * 3 / this.dartsUsed;
+      this.updateScores();
+    }
+  }
+
+const practice = new Practice();

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -16,13 +17,32 @@
       <h1 class="text-center">TungstenScoring</h1> 
       <p class="text-center">Online darts scoring</p> 
     </div>
-    <!--Toolbar that can access New match, Continue a match , Current Match , Settings, Practice-->
-    <!-- Onload the only part of the page that is available -->
-    <div class="container" id="start">
-
+    <!-- Toolbar that can access New match, Continue a match , Current Match , Settings, Practice -->
+    
+    <div class="topnav" id="theTopnav">
+      <a onclick=home() class="active">Home</a>
+      <a onclick=creatematch() >New match</a>
+      <a onclick=continuematch()>Continue match</a>
+      <a onclick=currentmatch()>Current match</a>
+      <a onclick=manageplayers()>Manage players</a>
+      <a onclick=practicefunc()>Practice</a>
+      <a onclick=settings()>Settings</a>
+    </div> 
+    
+    <!-- Onload the only part of the page that is available or when a match is finished -->
+    <div class="container" id="home">
+      <div class="btn-group-vertical btn-group-lg" role="group">
+        <button>Home</button>
+        <button>Continue match</button>
+        <button>Current match</button>
+        <button>Practice</button>
+        <button>Manage Players</button>
+        <button>Settings</button>
+      </div> 
     </div>
+    
     <!-- New match container-->
-    <div class="container" id="newmatch" >
+    <div class="container" id="newMatch" >
       <div class="row">
         <div class="col-sm"><h5>Create new match</h5></div>
         <div class="col-sm" ><h6>Player1 Name:</h6><input id="p1name"></input></div>
@@ -64,7 +84,7 @@
 
     </div>
     <!-- Game created container appears for X01 game-->
-    <div class="container" id="Game">
+    <div class="container" id="game">
       <h3>First to 1 set out of 5 legs</h3>
       <div class="row">
         <div class="col"><h6 id="p1setswon">0</h6></div>
@@ -77,9 +97,9 @@
         <div class="col"><h6 id="p2Legswon">0</h6></div>
       </div>
       <div class="row">
-        <div class="col"><h1 id="name1">Player1</h1></div>
+        <div class="col"><i id="arrow1" class="fas fa-caret-square-right fa-2x"></i><h1 id="name1">Player1</h1></div>
         <div class="col"></div>
-        <div class="col"><h1 id="name2">Player2</h1></div>
+        <div class="col"><i id="arrow2" class="fas fa-caret-square-right fa-2x"></i><h1 id="name2">Player2</h1></div>
       </div>
       <div class="row">
         <div class="col"><h1 id ="score1">501</h1></div>
@@ -94,9 +114,24 @@
         <div class="col"><h2 id ="average2">00.00</h2></div>
       </div>
     </div>
-    <!-- Practice mode -->
-    <div class="container" id="practiceSetup">
+    <!-- End of game stats -->
+    <div>
       
+    </div>
+    <!-- Practice mode -->
+    <div class="container" id="practice">
+      <div>
+        <h1 id="totalScore">Total Score:</h1><h1 id="scorePractice">0</h1>
+      </div>
+      <div>
+        <h3 id="average">Average:</h3><h3 id="averagePractice">0.00</h3>
+      </div>
+      <div>
+        <h6 id="darts">Darts used:</h6><h6 id="dartsPractice">0</h6>
+      </div>
+      
+      <input type="text" id="inputPractice" ></input>
+      <button type="button" id="submitPractice" onclick="practice.score(inputPractice.value)">Submit score</button>
     </div>
   </body>
   <script src="index.js"> </script>
