@@ -254,9 +254,13 @@ function matchmaker () {
 }
   class Practice {
     constructor () {
+      this.name = '';
       this.totalScore = 0;
       this.dartsUsed = 0;
       this.average = 0;
+      this.p100s = 0;
+      this.p140s = 0;
+      this.p180s = 0;
     }
 
     updateScores () {
@@ -272,6 +276,16 @@ function matchmaker () {
       this.totalScore = this.totalScore + input;
       this.dartsUsed = this.dartsUsed + 3;
       this.average = this.totalScore * 3 / this.dartsUsed;
+      if (input === 180) {
+        this.p180s = this.p180s + 1;
+      }
+      if (input >= 140) {
+        this.p140s = this.p140s + 1;
+      }
+      if (input >= 100) {
+        this.p100s = this.p100s + 1;
+      } else {
+      }
       this.updateScores();
     }
   }

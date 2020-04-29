@@ -118,7 +118,22 @@
     <div>
       
     </div>
-    <!-- Practice mode -->
+    <!-- Players tab -->
+    <!-- New player-->
+    <div class="container" id="updatePlayers">
+      <div class="row">
+        <div class="col"><h2>Forename:</h2><input type="text" id="forename"></input></div>
+        <div class="col"><h2>Surname:</h2><input type="text" id="surname"></input></div>
+        <div class="col"><h2>Nickname:</h2><input type="text" id="nickname"></input></div>
+        <div class="col"><button type="button" id="playerSubmit" onclick="">Update/Create Player</button></div>
+      </div>
+      
+    </div>
+    <!-- Current players-->
+    <div class="container" id="currentPlayers">
+      
+    </div>
+    <!-- Practice mode tab -->
     <div class="container" id="practice">
       <div>
         <h1 id="totalScore">Total Score:</h1><h1 id="scorePractice">0</h1>
@@ -132,7 +147,9 @@
       
       <input type="text" id="inputPractice" ></input>
       <button type="button" id="submitPractice" onclick="practice.score(inputPractice.value)">Submit score</button>
+      <button type="button" id="savePractice" onclick="savePractice">Save Practice session</button>
     </div>
+
   </body>
   <script src="index.js"> </script>
   
