@@ -194,6 +194,7 @@ function home () {
   document.getElementById('game').style.display = 'none';
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'none';
 }
 function creatematch () {
   document.getElementById('home').style.display = 'none';
@@ -202,6 +203,7 @@ function creatematch () {
   document.getElementById('game').style.display = 'none';
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'none';
 }
 function continuematch () {
   document.getElementById('home').style.display = 'none';
@@ -210,6 +212,7 @@ function continuematch () {
   document.getElementById('game').style.display = 'none';
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'none';
 }
 function currentmatch () {
   document.getElementById('home').style.display = 'none';
@@ -218,6 +221,7 @@ function currentmatch () {
   document.getElementById('game').style.display = 'block';
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'none';
 }
 function practicefunc () {
   document.getElementById('home').style.display = 'none';
@@ -226,6 +230,7 @@ function practicefunc () {
   document.getElementById('game').style.display = 'none';
   document.getElementById('practice').style.display = 'block';
   document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'none';
 }
 function settings () {
   document.getElementById('home').style.display = 'none';
@@ -234,7 +239,24 @@ function settings () {
   document.getElementById('game').style.display = 'none';
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'block';
+  document.getElementById('managePlayers').style.display = 'none';
 }
+function manageplayers () {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('newMatch').style.display = 'none';
+  document.getElementById('continueMatch').style.display = 'none';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('settings').style.display = 'none';
+  document.getElementById('managePlayers').style.display = 'block';
+}
+
+document.getElementById('homeButton').addEventListener('click', home());
+document.getElementById('continueButton').addEventListener('click', continuematch());
+document.getElementById('currentButton').addEventListener('click', currentmatch());
+document.getElementById('practiceButton').addEventListener('click', practicefunc());
+document.getElementById('settingsButton').addEventListener('click', settings());
+document.getElementById('playersButton').addEventListener('click', manageplayers());
 
 const natch = new Match('p1name', 'p2name', 501, 1, 1);
 function matchmaker () {
@@ -249,7 +271,7 @@ function matchmaker () {
   document.getElementById('name2').innerText = natch.p2Name;
   document.getElementById('score1').innerText = natch.p1Score;
   document.getElementById('score2').innerText = natch.p2Score;
-  document.getElementById('newMatch').style.display = 'none';
+  currentmatch();
   document.getElementById('inputscore').focus();
 }
   class Practice {
@@ -266,6 +288,9 @@ function matchmaker () {
     updateScores () {
       document.getElementById('scorePractice').innerText = this.totalScore;
       document.getElementById('dartsPractice').innerText = this.dartsUsed;
+      document.getElementById('p100').innerText = this.p100s;
+      document.getElementById('p140').innerText = this.p140s;
+      document.getElementById('p180').innerText = this.p180s;
       document.getElementById('averagePractice').innerText = Number(this.average).toFixed(2);
       document.getElementById('inputPractice').value = '';
       document.getElementById('inputPractice').focus();
@@ -278,11 +303,9 @@ function matchmaker () {
       this.average = this.totalScore * 3 / this.dartsUsed;
       if (input === 180) {
         this.p180s = this.p180s + 1;
-      }
-      if (input >= 140) {
+      } else if (input >= 140) {
         this.p140s = this.p140s + 1;
-      }
-      if (input >= 100) {
+      } else if (input >= 100) {
         this.p100s = this.p100s + 1;
       } else {
       }
@@ -291,3 +314,38 @@ function matchmaker () {
   }
 
 const practice = new Practice();
+
+function generateTableHead (table, data) {
+  const thead = table.createTHead();
+  const row = thead.insertRow();
+  for (const key of data) {
+    const th = document.createElement("th");
+    const text = document.createTextNode(key);
+    th.appendChild(text);
+    row.appendChild(th);
+  }
+}
+
+const mountains = [
+  { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
+  { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
+  { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
+  { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
+  { name: "Monte Amiata", height: 1738, place: "Siena" }
+];
+
+function generateTable (table, data) {
+  for (const element of data) {
+    const row = table.insertRow();
+    for (key in element) {
+      const cell = row.insertCell();
+      const text = document.createTextNode(element[key]);
+      cell.appendChild(text);
+    }
+  }
+}
+
+const table = document.getElementById('playerTable');
+const data = Object.keys(mountains[0]);
+generateTableHead(table, data);
+generateTable(table, mountains);

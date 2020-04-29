@@ -32,12 +32,12 @@
     <!-- Onload the only part of the page that is available or when a match is finished -->
     <div class="container" id="home">
       <div class="btn-group-vertical btn-group-lg" role="group">
-        <button>Home</button>
-        <button>Continue match</button>
-        <button>Current match</button>
-        <button>Practice</button>
-        <button>Manage Players</button>
-        <button>Settings</button>
+        <button id="homeButton">Home</button>
+        <button id="continueButton">Continue match</button>
+        <button id="currentButton">Current match</button>
+        <button id="practiceButton">Practice</button>
+        <button id="playersButton">Manage Players</button>
+        <button id="settingsButton">Settings</button>
       </div> 
     </div>
     
@@ -120,19 +120,19 @@
     </div>
     <!-- Players tab -->
     <!-- New player-->
-    <div class="container" id="updatePlayers">
+    <div class="container" id="managePlayers">
       <div class="row">
         <div class="col"><h2>Forename:</h2><input type="text" id="forename"></input></div>
         <div class="col"><h2>Surname:</h2><input type="text" id="surname"></input></div>
         <div class="col"><h2>Nickname:</h2><input type="text" id="nickname"></input></div>
         <div class="col"><button type="button" id="playerSubmit" onclick="">Update/Create Player</button></div>
       </div>
-      
+    <!-- Table of current players -->
+      <table class="table" id="playerTable">
+      </table>
     </div>
-    <!-- Current players-->
-    <div class="container" id="currentPlayers">
-      
-    </div>
+   
+    
     <!-- Practice mode tab -->
     <div class="container" id="practice">
       <div>
@@ -144,12 +144,24 @@
       <div>
         <h6 id="darts">Darts used:</h6><h6 id="dartsPractice">0</h6>
       </div>
-      
-      <input type="text" id="inputPractice" ></input>
-      <button type="button" id="submitPractice" onclick="practice.score(inputPractice.value)">Submit score</button>
+      <div>
+        <h6 id="s100">100s:</h6><h6 id="p100">0</h6>
+      </div>
+      <div>
+        <h6 id="s140">140s:</h6><h6 id="p140">0</h6>
+      </div>
+      <div>
+        <h6 id="s180">180s:</h6><h6 id="p180">0</h6>
+      </div>
+      <div>
+        <input type="text" id="inputPractice" ></input>
+        <button type="button" id="submitPractice" onclick="practice.score(inputPractice.value)">Submit score</button>
+      </div>
       <button type="button" id="savePractice" onclick="savePractice">Save Practice session</button>
     </div>
-
+    <div class="container" id="settings">
+      
+    </div>
   </body>
   <script src="index.js"> </script>
   

@@ -10,18 +10,12 @@ body{
 #arrow2, #name2{
   display: inline-block; 
 }
-#totalScore, #scorePractice{
-  display: inline-block;
-}
-#darts, #dartsPractice {
-  display: inline-block;
-}
-#average, #averagePractice{
+#totalScore, #scorePractice , #p100 , #s100, #s140, #p140, #p180, #s180, #darts, #dartsPractice, #average, #averagePractice{
   display: inline-block;
 }
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #333;
+  background-color: rgb(44, 5, 5);
   overflow: hidden;
 }
 #arrow2{
@@ -46,6 +40,6 @@ body{
 
 /* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #4CAF50;
+  background-color: rgb(128, 67, 17);
   color: white;
 }
