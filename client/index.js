@@ -312,7 +312,7 @@ function generateTableHead (table, data) {
   const thead = table.createTHead();
   const row = thead.insertRow();
   for (const key of data) {
-    const th = document.createElement("th");
+    const th = document.createElement('th');
     const text = document.createTextNode(key);
     th.appendChild(text);
     row.appendChild(th);
@@ -320,9 +320,9 @@ function generateTableHead (table, data) {
 }
 async function playersTable () {
   try {
-    let response = await fetch('http://127.0.0.1:8090/players');
-    let result = await response.json();
-    let results = JSON.parse(result);
+    const response = await fetch('http://127.0.0.1:8090/players');
+    const result = await response.json();
+    const results = JSON.parse(result);
     return results;
 } catch (e) {
   alert(e);
