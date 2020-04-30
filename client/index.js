@@ -249,14 +249,7 @@ function manageplayers () {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'block';
-}
-
-document.getElementById('homeButton').addEventListener('click', home());
-document.getElementById('continueButton').addEventListener('click', continuematch());
-document.getElementById('currentButton').addEventListener('click', currentmatch());
-document.getElementById('practiceButton').addEventListener('click', practicefunc());
-document.getElementById('settingsButton').addEventListener('click', settings());
-document.getElementById('playersButton').addEventListener('click', manageplayers());
+  }
 
 const natch = new Match('p1name', 'p2name', 501, 1, 1);
 function matchmaker () {
@@ -325,14 +318,23 @@ function generateTableHead (table, data) {
     row.appendChild(th);
   }
 }
-
-const mountains = [
-  { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
-  { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
-  { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
-  { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-  { name: "Monte Amiata", height: 1738, place: "Siena" }
-];
+async function playersTable () {
+  try {
+    let response = await fetch('http://127.0.0.1:8090/players');
+    let result = await response.json();
+    let results = JSON.parse(result);
+    return results;
+} catch (e) {
+  alert(e);
+}
+}
+playersTable()
+.then(results => {
+  const table = document.getElementById('playerTable');
+  const data = Object.keys(results[0]);
+  generateTableHead(table, data);
+  generateTable(table, results);
+});
 
 function generateTable (table, data) {
   for (const element of data) {
@@ -344,8 +346,3 @@ function generateTable (table, data) {
     }
   }
 }
-
-const table = document.getElementById('playerTable');
-const data = Object.keys(mountains[0]);
-generateTableHead(table, data);
-generateTable(table, mountains);
