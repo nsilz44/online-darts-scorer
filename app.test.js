@@ -10,4 +10,9 @@ describe('test GET players', () => {
             .get('/players')
             .expect(200);
     });
+    test('GET players returns JSON', () => {
+        return request(app)
+            .get('/players')
+            .expect('Content-type', /json/);
+    });
 });

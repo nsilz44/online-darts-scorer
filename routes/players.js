@@ -10,7 +10,7 @@ router
             console.log('File read failed:', err);
             return;
         }
-        try {;
+        try {
             let playerList = jsonString;
             res.json(playerList);
         } catch (err) {
