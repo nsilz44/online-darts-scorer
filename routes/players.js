@@ -11,7 +11,7 @@ router
             return;
         }
         try {
-            let playerList = jsonString;
+            const playerList = jsonString;
             res.json(playerList);
         } catch (err) {
             console.error(err);
@@ -25,4 +25,25 @@ router
     .post((req, res) => {
 
     });
+router
+    .route('/delete')
+    .post((req, res) => {
+    fs.readFile('./routes/players.json', 'utf8', (err, oldlist) => {
+        if (err) {
+            console.log('File read failed:', err);
+            return;
+        }
+        try {
+            for (id in deleteList) {
+                var index = oldlist.findIndex(a => a.id === id);
+                if (index > -1) {
+                    oldlist.splice(index, 1);
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+    });
+
 module.exports = router;

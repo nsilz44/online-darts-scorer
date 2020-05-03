@@ -308,19 +308,10 @@ function matchmaker () {
 
 const practice = new Practice();
 
-function generateTableHead (table, data) {
-  const thead = table.createTHead();
-  const row = thead.insertRow();
-  for (const key of data) {
-    const th = document.createElement('th');
-    const text = document.createTextNode(key);
-    th.appendChild(text);
-    row.appendChild(th);
-  }
-}
+function loadPlayerTable () {
 async function playersTable () {
   try {
-    const response = await fetch('http://127.0.0.1:8090/players');
+    const response = await fetch('/players');
     const result = await response.json();
     const results = JSON.parse(result);
     return results;
@@ -335,6 +326,7 @@ playersTable()
   generateTableHead(table, data);
   generateTable(table, results);
 });
+}
 
 function generateTable (table, data) {
   for (const element of data) {
@@ -346,3 +338,28 @@ function generateTable (table, data) {
     }
   }
 }
+
+function generateTableHead (table, data) {
+  const thead = table.createTHead();
+  const row = thead.insertRow();
+  for (const key of data) {
+    const th = document.createElement('th');
+    const text = document.createTextNode(key);
+    th.appendChild(text);
+    row.appendChild(th);
+  }
+}
+
+function deletePlayer (ids) {
+  async function deletePlayerSuccess () {
+    try {
+      await fetch('/delete');
+    } catch (e) {
+      alert(e);
+    }
+  }
+  deletePlayerSuccess()
+    .then(alert('Successful Deletion'));
+  }
+
+loadPlayerTable();
