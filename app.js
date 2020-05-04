@@ -3,9 +3,7 @@ const fs = require('fs');
 const app = express();
 const players = require('./routes/players');
 const practice = require('./routes/practice');
-const bodyParser = require('body-parser');
-
-app.use(bodyParser.urlencoded({ extended: false }));
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 

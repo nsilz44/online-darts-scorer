@@ -123,10 +123,11 @@
     <!-- New player-->
     <div class="container" id="managePlayers">
       <div class="row">
-        <div class="col"><h2>Forename:</h2><input type="text" id="forename"></input></div>
-        <div class="col"><h2>Surname:</h2><input type="text" id="surname"></input></div>
-        <div class="col"><h2>Nickname:</h2><input type="text" id="nickname"></input></div>
-        <div class="col"><button type="button" id="playerSubmit" onclick="">Update/Create Player</button></div>
+        <div class="col"><h5>Forename:</h5><input type="text" id="forename"></input></div>
+        <div class="col"><h5>Surname:</h5><input type="text" id="surname"></input></div>
+        <div class="col"><h5>Nickname:</h5><input type="text" id="nickname"></input></div>
+        <div class="col"><h5>ID:</h5><input type="text" id="idPlayer" readonly></input></div>
+        <div class="col"><button type="button" id="playerSubmit" onclick="createUpdatePlayer()">Update/Create Player</button><button type="button" id="PlayerReset" onclick="resetPlayersInput()">Reset input</Input></button></div>
       </div>
     <!-- Table of current players -->
       <table class="table" id="playerTable">

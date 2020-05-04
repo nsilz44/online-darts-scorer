@@ -249,6 +249,8 @@ function manageplayers () {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'block';
+  resetPlayersInput();
+  loadPlayerTable();
   }
 
 const natch = new Match('p1name', 'p2name', 501, 1, 1);
@@ -309,23 +311,24 @@ function matchmaker () {
 const practice = new Practice();
 
 function loadPlayerTable () {
-async function playersTable () {
-  try {
-    const response = await fetch('/players');
-    const result = await response.json();
-    const results = JSON.parse(result);
-    return results;
-} catch (e) {
-  alert(e);
-}
-}
-playersTable()
-.then(results => {
+  clearPlayersTable();
+  async function playersTable () {
+    try {
+      const response = await fetch('/players');
+      const result = await response.json();
+      const results = JSON.parse(result);
+      return results;
+  } catch (e) {
+    alert(e);
+  }
+  }
+  playersTable()
+    .then(results => {
   const table = document.getElementById('playerTable');
   const data = Object.keys(results[0]);
   generateTableHead(table, data);
   generateTable(table, results);
-});
+  });
 }
 
 function generateTable (table, data) {
@@ -361,5 +364,60 @@ function deletePlayer (ids) {
   deletePlayerSuccess()
     .then(alert('Successful Deletion'));
   }
+function createUpdatePlayer () {
+  var firstname = document.getElementById('forename').value;
+  var secondname = document.getElementById('surname').value;
+  var nickname = document.getElementById('nickname').value;
+  var id = document.getElementById('idPlayer').value;
+  var json = { Forename: firstname, Surname: secondname, Nickname: nickname, ID: id };
+  async function createPlayerSuccess () {
+    try {
+      var jsonData = JSON.stringify(json);
+      await fetch('/players/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonData
+      });
+    } catch (e) {
+      alert(e);
+    }
+  }
+  createPlayerSuccess()
+    .then(alert('Successful player creation'));
+    manageplayers();
+}
 
-loadPlayerTable();
+function dateToId () {
+  var rightNow = new Date();
+  var res = rightNow.toISOString().slice(0, 10).replace(/-/g, '');
+  var hh = rightNow.getHours();
+  var mm = rightNow.getMinutes();
+  var ss = rightNow.getSeconds();
+  var HH = '' + hh;
+  var MM = '' + mm;
+  var SS = '' + ss;
+  var Id = res.concat(HH, MM, SS);
+  return Id;
+}
+function resetPlayersInput () {
+  document.getElementById('forename').value = '';
+  document.getElementById('surname').value = '';
+  document.getElementById('nickname').value = '';
+  var newId = dateToId();
+  document.getElementById('idPlayer').value = newId;
+}
+function clearPlayersTable () {
+  var Parent = document.getElementById('playerTable');
+  while (Parent.hasChildNodes()) {
+     Parent.removeChild(Parent.firstChild);
+  }
+}
+function continueGame (p1name, p2name, startscore, sets, legs, scorecard, closecard) {
+  natch.p1Name = p1name;
+  natch.p2Name = p2name;
+  natch.startScore = startscore;
+  natch.setsRequired = sets;
+  natch.legsRequired = legs;
+}
