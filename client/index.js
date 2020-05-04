@@ -277,7 +277,7 @@ function manageplayers () {
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'block';
   resetPlayersInput();
-  loadPlayerTable();
+  loadPlayerTable(document.getElementById('playerTable'));
   }
 
 const natch = new Match('p1name', 'p2name', 501, 1, 1);
@@ -298,7 +298,6 @@ function matchmaker () {
 }
   class Practice {
     constructor () {
-      this.name = '';
       this.totalScore = 0;
       this.dartsUsed = 0;
       this.average = 0;
@@ -337,8 +336,8 @@ function matchmaker () {
 
 const practice = new Practice();
 
-function loadPlayerTable () {
-  clearPlayersTable();
+function loadPlayerTable (tableId) {
+  clearPlayersTable(tableId);
   async function playersTable () {
     try {
       const response = await fetch('/players');
@@ -349,9 +348,9 @@ function loadPlayerTable () {
     alert(e);
   }
   }
-  playersTable()
+  playersTable(tableId)
     .then(results => {
-  const table = document.getElementById('playerTable');
+  const table = tableId;
   const data = Object.keys(results[0]);
   generateTableHead(table, data);
   generateTable(table, results);
@@ -435,8 +434,7 @@ function resetPlayersInput () {
   var newId = dateToId();
   document.getElementById('idPlayer').value = newId;
 }
-function clearPlayersTable () {
-  var Parent = document.getElementById('playerTable');
+function clearPlayersTable (Parent) {
   while (Parent.hasChildNodes()) {
      Parent.removeChild(Parent.firstChild);
   }
@@ -452,4 +450,57 @@ function continueGame (p1name, p2name, startscore, sets, legs, scorecard, closec
   natch.startScore = startscore;
   natch.setsRequired = sets;
   natch.legsRequired = legs;
+}
+function savePractice () {
+  document.getElementById('inputPractice').style.display = 'none';
+  document.getElementById('submitPractice').style.display = 'none';
+  document.getElementById('submitPractice').style.display = 'none';
+  document.getElementById('inputPracticeName').style.display = 'block';
+}
+
+function practiceSaved () {
+  var totalScore = practice.totalScore;
+  var average = practice.average;
+  var dartsUsed = practice.dartsUsed;
+  var p100s = practice.p100s;
+  var p140s = practice.p140s;
+  var p180s = practice.p180s;
+  var name = document.getElementById('practicename').value;
+  var today = new Date();
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + space + today.getHours() + ':' + today.getMinutes();
+  var jsarray = { Name: name, Score: totalScore, 'Darts thrown': dartsUsed, '100s': p100s, '140s': p140s, '180s': p180s, Average: average, 'Date and time': date };
+  async function practiceSavedComplete () {
+    try {
+      var jsonData = JSON.stringify(jsarray);
+      var response = await fetch('/practice/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonData
+      });
+      const result = await response.json();
+      const results = JSON.parse(result);
+      return results.Name;
+    } catch (e) {
+      alert(e);
+    }
+  }
+  practiceSavedComplete()
+    .then(Name => {
+      getPractice(Name);
+      alert('Practice has been saved');
+    });
+  function getPractice (name) {
+    async function gotPractice () {
+      const response = await fetch('/practice/?name=' + name);
+      const body = await response.json();
+      var results = JSON.parse(body);
+      return results;
+    }
+    gotPractice()
+      .then(results => {
+        loadPlayerTable(document.getElementById('practiceTable'));
+      });
+  }
 }

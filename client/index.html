@@ -162,7 +162,20 @@
         <input type="text" id="inputPractice" ></input>
         <button type="button" id="submitPractice" onclick="practice.score(inputPractice.value)">Submit score</button>
       </div>
-      <button type="button" id="savePractice" onclick="savePractice">Save Practice session</button>
+      <button type="button" id="savePractice" onclick="savePractice()">Save Practice session</button>
+    </div>
+    <!-- Practice input name -->
+    <div class="container" id="inputPracticeName">
+      <h3>Please input name to be saved:</h3>
+      <div>
+        <input type="text" list="playerlistpractice"id="practicename" placeholder="Input name">
+        <datalist id="playerlistpractice"></datalist></input></div>
+      <button type="button" id="savePracticeButton" onclick="practiceSaved()"></button>
+    </div>
+    <!-- Practice stats table -->
+    <div class="container" id="practiceStats">
+    <table class="table" id="practiceTable">
+    </table>
     </div>
     <div class="container" id="settings">
       
