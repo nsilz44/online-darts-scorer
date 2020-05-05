@@ -3,9 +3,7 @@ var legal3DartCloses = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 var space = ' ';
 
 class Match {
-  constructor (p1name, p2name, startscore, sets, legs) {
-    sets = +sets;
-    legs = +legs;
+  constructor (p1name, p2name, startscore) {
     startscore = +startscore;
     this.p1Name = p1name;
     this.p2Name = p2name;
@@ -30,14 +28,16 @@ class Match {
     this.p1100s = 0;
     this.p2100s = 0;
     this.startScore = startscore;
-    this.setsRequired = sets;
-    this.legsRequired = legs;
-    this.legStart = 1;
-    this.SetStart = 1;
+    this.setsRequired = 3;
+    this.legsRequired = 3;
+    this.legStart = 2;
+    this.SetStart = 2;
     this.turn = 1;
-    this.inputCard = [];
-    this.turnCard = [];
     this.scoreCard = [];
+    this.closeCard = [];
+    this.Id = '';
+    this.gameStarted = '';
+    this.lastUpdated = '';
   }
 
   updateScores () {
@@ -47,6 +47,10 @@ class Match {
     document.getElementById('score2').innerText = this.p2Score;
     document.getElementById('average1').innerText = Number(this.p1Average).toFixed(2);
     document.getElementById('average2').innerText = Number(this.p2Average).toFixed(2);
+    document.getElementById('p1setswon').innerText = this.p1Sets;
+    document.getElementById('p2setswon').innerText = this.p2Sets;
+    document.getElementById('p1Legswon').innerText = this.p1Legs;
+    document.getElementById('p2Legswon').innerText = this.p2Legs;
     document.getElementById('inputscore').value = '';
     document.getElementById('inputscore').focus();
     if (this.turn === 1) {
@@ -56,6 +60,33 @@ class Match {
       document.getElementById('arrow2').style.display = 'inline-block';
       document.getElementById('arrow1').style.display = 'none';
     }
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + space + today.getHours() + ':' + today.getMinutes();
+    natch.lastUpdated = date; 
+    updateGame();
+    console.log(this.p1Name, this.p2Name, this.p1Score, this.p2Score, this.p1Legs, this.p2Legs, this.p1Sets, this.p2Sets, this.p1TotalScore,
+      this.p2TotalScore, this.p1TotalDarts, this.p2TotalDarts,
+      this.p1LegDarts
+      , this.p2LegDarts
+      , this.p1Average
+      , this.p2Average
+     , this.p1180s
+     , this.p2180s
+     , this.p1140s
+     , this.p2140s
+     , this.p1100s
+     , this.p2100s
+     , this.startScore
+     , this.setsRequired
+     , this.legsRequired
+     , this.legStart
+     , this.SetStart
+     , this.turn
+     , this.scoreCard
+     , this.closeCard
+      , this.Id
+      , this.gameStarted
+      , this.lastUpdated);
   }
 
   // Checks whos turn it is
@@ -67,34 +98,89 @@ class Match {
     }
   }
 
+  turncheckClosed (input) {
+    document.getElementById('inputBox').style.display = 'block';
+    document.getElementById('dartsBox').style.display = 'none';
+    if (this.turn === 1) {
+      this.situation1(input);
+    } else {
+      this.situation2(input);
+    }
+  }
+
 /* eslint-env browser */
   // Checking if score is valid for player1
   scorecheck1 (input) {
     input = +input;
     if (legalScores.includes(input) === false) {
       alert('Please input a legal score');
+      this.updateScores();
     } else if (input > this.p1Score || this.p1Score - input === 1) {
       alert('Please input a legal score');
+      this.updateScores();
     } else if (input < this.p1Score) {
+      if (input === 180) {
+        this.p1180s = this.p1180s + 1;
+      } else if (input >= 140) {
+        this.p1140s = this.p1140s + 1;
+      } else if (input >= 100) {
+          this.p1100s = this.p1100s + 1;
+        }
       this.p1Score = this.p1Score - input;
       this.p1TotalScore = this.p1TotalScore + input;
       this.p1TotalDarts = this.p1TotalDarts + 3;
-      this.turnCard.push(this.turn);
+      this.p1LegDarts = this.p1LegDarts + 3;
       this.turn = 2;
-      this.inputCard.push(input);
-      this.scoreCard.push(this.p1Score);
+      this.scoreCard.push(input);
+      this.updateScores();
     } else if (legal3DartCloses.includes(input) === false) {
       alert('Not a legal close');
       // Closed
     } else {
+      if (input >= 140) {
+        this.p1140s = this.p1140s + 1;
+      } else if (input >= 100) {
+          this.p1100s = this.p1100s + 1;
+        }
+      this.p1Score = this.p1Score - input;
       this.p1TotalScore = this.p1TotalScore + input;
-      this.p1TotalDarts = this.p1TotalDarts + 3;
-      this.inputCard.push(input);
-      this.p1Score = this.startScore;
-      this.p2Score = this.startScore;
-      this.scoreCard.push(this.p1Score);
-      this.scoreCard.push(this.p2Score);
-      this.situation1();
+      this.scoreCard.push(input);
+      document.getElementById('inputBox').style.display = 'none';
+      document.getElementById('dartsBox').style.display = 'block';
+    }
+  }
+
+  // Player 1 won the leg
+  situation1 (input) {
+    input = +input;
+    this.p1LegDarts = 0;
+    this.p2LegDarts = 0;
+    this.closeCard.push(input);
+    this.p1TotalDarts = this.p1TotalDarts + input;
+    this.p1Legs = this.p1Legs + 1;
+    this.p1Score = this.startScore;
+    this.p2Score = this.startScore;
+    if (this.p1Legs === this.legsRequired) {
+      this.p1Sets = this.p1Sets + 1;
+      this.p1Legs = 0;
+      this.p2Legs = 0;
+      if (this.p1Sets === this.setsRequired) {
+        alert(this.p1name + ' has won the game');
+        document.getElementById('inputBox').style.display = 'none';
+      } else {
+        this.legStart = this.SetStart;
+        if (this.SetStart === 1) {
+          this.SetStart = 2;
+        } else {
+          this.SetStart = 1;
+        }
+      }
+    }
+    this.turn = this.legStart;
+    if (this.legStart === 1) {
+      this.legStart = 2;
+    } else {
+      this.legStart = 1;
     }
     this.updateScores();
   }
@@ -103,70 +189,59 @@ class Match {
     input = +input;
     if (legalScores.includes(input) === false) {
       alert('Please input a legal score');
-    } else if (input > this.p2Score || this.p1Score - input === 1) {
-      alert('please input a legal score');
+      this.updateScores();
+    } else if (input > this.p2Score || this.p2Score - input === 1) {
+      alert('Please input a legal score');
+      this.updateScores();
     } else if (input < this.p2Score) {
+      if (input === 180) {
+        this.p2180s = this.p2180s + 1;
+      } else if (input >= 140) {
+        this.p2140s = this.p2140s + 1;
+      } else if (input >= 100) {
+          this.p2100s = this.p2100s + 1;
+        }
       this.p2Score = this.p2Score - input;
       this.p2TotalScore = this.p2TotalScore + input;
       this.p2TotalDarts = this.p2TotalDarts + 3;
-      this.turnCard.push(this.turn);
+      this.p2LegDarts = this.p2LegDarts + 3;
       this.turn = 1;
-      this.scoreCard.push(this.p2Score);
-      this.inputCard.push(input);
+      this.scoreCard.push(input);
+      this.updateScores();
     } else if (legal3DartCloses.includes(input) === false) {
       alert('Not a legal close');
+      // Closed
     } else {
-      // Player2 has closed
-      // resets score of both players
-      this.scorecard.push(input);
-      this.p1Score = this.startScore;
-      this.p2Score = this.startScore;
-      this.situation2();
-    }
-    this.updateScores();
-  }
-
-  // Player 1 won the leg
-  situation1 () {
-    this.p1Legs = this.p1Legs + 1;
-    if (this.p1Legs === this.legsRequired) {
-      this.p1Sets = this.p1Sets + 1;
-      this.p1Legs = 0;
-      this.p2Legs = 0;
-      if (this.p1Sets === this.setsRequired) {
-        alert(this.p1name + ' has won the game');
-        document.getElementById('newmatch').style.display = 'block';
-      } else {
-        this.legStart = this.SetStart;
-        if (this.SetStart === 1) {
-          this.SetStart = 2;
-        } else {
-          this.SetStart = 1;
+      if (input >= 140) {
+        this.p2140s = this.p2140s + 1;
+      } else if (input >= 100) {
+          this.p2100s = this.p2100s + 1;
         }
-      }
+      this.p2Score = this.p2Score - input;
+      this.p2TotalScore = this.p2TotalScore + input;
+      this.scoreCard.push(input);
+      document.getElementById('inputBox').style.display = 'none';
+      document.getElementById('dartsBox').style.display = 'block';
     }
-    this.turn = this.legStart;
-    if (this.legStart === 1) {
-      this.legStart = 2;
-    } else {
-      this.legStart = 1;
-    }
-    document.getElementById('p1setswon').innerText = this.p1Sets;
-    document.getElementById('p2setswon').innerText = this.p2Sets;
-    document.getElementById('p1Legswon').innerText = this.p1Legs;
-    document.getElementById('p2Legswon').innerText = this.p2Legs;
   }
 
   // Player 2 won the leg
-  situation2 () {
+  situation2 (input) {
+    input = +input;
+    this.p1LegDarts = 0;
+    this.p2LegDarts = 0;
+    this.closeCard.push(input);
+    this.p2TotalDarts = this.p2TotalDarts + input;
     this.p2Legs = this.p2Legs + 1;
+    this.p1Score = this.startScore;
+    this.p2Score = this.startScore;
     if (this.p2Legs === this.legsRequired) {
       this.p2Sets = this.p2Sets + 1;
       this.p1Legs = 0;
       this.p2Legs = 0;
       if (this.p2Sets === this.setsRequired) {
         alert(this.p2name + ' has won the game');
-        document.getElementById('newmatch').style.display = 'block';
+        document.getElementById('inputBox').style.display = 'none';
       } else {
         this.legStart = this.SetStart;
         if (this.SetStart === 1) {
@@ -182,11 +257,8 @@ class Match {
     } else {
       this.legStart = 1;
     }
-    document.getElementById('p1setswon').innerText = this.p1Sets;
-    document.getElementById('p2setswon').innerText = this.p2Sets;
-    document.getElementById('p1Legswon').innerText = this.p1Legs;
-    document.getElementById('p2Legswon').innerText = this.p2Legs;
-  }
+    this.updateScores();
+}
 }
 function home () {
   document.getElementById('home').style.display = 'block';
@@ -249,6 +321,9 @@ function currentmatch () {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'none';
+  document.getElementById('dartsBox').style.display = 'none';
+  natch.updateScores();
+  document.getElementById('inputscore').focus();
 }
 function practicefunc () {
   document.getElementById('home').style.display = 'none';
@@ -280,21 +355,31 @@ function manageplayers () {
   loadPlayerTable(document.getElementById('playerTable'));
   }
 
-const natch = new Match('p1name', 'p2name', 501, 1, 1);
+const natch = new Match('p1name', 'p2name', 501);
 function matchmaker () {
+  resetNatch();
   natch.p1Name = document.getElementById('p1name').value;
   natch.p2Name = document.getElementById('p2name').value;
   natch.startScore = document.getElementById('startscore').value;
-  natch.setsRequired = document.getElementById('sets').value;
-  natch.legsRequired = document.getElementById('legs').value;
+  var setsRequired = document.getElementById('sets').value;
+  var legsRequired = document.getElementById('legs').value;
+  setsRequired = +setsRequired;
+  legsRequired = +legsRequired;
+  natch.setsRequired = setsRequired;
+  natch.legsRequired = legsRequired;
   natch.p1Score = natch.startScore;
   natch.p2Score = natch.startScore;
+  natch.Id = dateToId();
+  var today = new Date();
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + space + today.getHours() + ':' + today.getMinutes();
+  natch.gameStarted = date;
   document.getElementById('name1').innerText = natch.p1Name;
   document.getElementById('name2').innerText = natch.p2Name;
   document.getElementById('score1').innerText = natch.p1Score;
   document.getElementById('score2').innerText = natch.p2Score;
+  const gameParams = 'First to ' + natch.setsRequired.toString() + ' sets with first to ' + natch.legsRequired.toString() + ' legs  per set';
+  document.getElementById('gameParams').innerText = gameParams;
   currentmatch();
-  document.getElementById('inputscore').focus();
 }
   class Practice {
     constructor () {
@@ -444,13 +529,7 @@ function clearPlayerslist (id) {
     id.removeChild(id.firstChild);
   }
 }
-function continueGame (p1name, p2name, startscore, sets, legs, scorecard, closecard) {
-  natch.p1Name = p1name;
-  natch.p2Name = p2name;
-  natch.startScore = startscore;
-  natch.setsRequired = sets;
-  natch.legsRequired = legs;
-}
+
 function savePractice () {
   document.getElementById('inputPractice').style.display = 'none';
   document.getElementById('submitPractice').style.display = 'none';
@@ -503,4 +582,117 @@ function practiceSaved () {
         loadPlayerTable(document.getElementById('practiceTable'));
       });
   }
+}
+
+function undoGame () {
+  var oldScorecard = natch.scoreCard;
+  oldScorecard.pop();
+  const p1name = natch.p1Name;
+  const p2name = natch.p2Name;
+  const startscore = natch.startScore;
+  const legsRequired = natch.legsRequired;
+  const setsRequired = natch.setsRequired;
+  const closecard = natch.closeCard;
+  const iD = natch.Id;
+  const gameStarted = natch.gameStarted;
+  const lastUpdated = natch.lastUpdated;
+  resetNatch();
+  continueGame(p1name, p2name, startscore, legsRequired, setsRequired, oldScorecard, closecard, iD, gameStarted, lastUpdated);
+}
+
+function resetNatch () {
+  natch.p1Name = '';
+  natch.p2Name = '';
+  natch.p1Score = '';
+  natch.p2Score = '';
+  natch.p1Legs = 0;
+  natch.p2Legs = 0;
+  natch.p1Sets = 0;
+  natch.p2Sets = 0;
+  natch.p1TotalScore = 0;
+  natch.p2TotalScore = 0;
+  natch.p1TotalDarts = 0;
+  natch.p2TotalDarts = 0;
+  natch.p1LegDarts = 0;
+  natch.p2LegDarts = 0;
+  natch.p1Average = 0;
+  natch.p2Average = 0;
+  natch.p1180s = 0;
+  natch.p2180s = 0;
+  natch.p1140s = 0;
+  natch.p2140s = 0;
+  natch.p1100s = 0;
+  natch.p2100s = 0;
+  natch.startScore = 501;
+  natch.setsRequired = 3;
+  natch.legsRequired = 3;
+  natch.legStart = 2;
+  natch.SetStart = 2;
+  natch.turn = 1;
+  natch.scoreCard = [];
+  natch.closeCard = [];
+  natch.Id = '';
+  natch.gameStarted = '';
+  natch.lastUpdated = '';
+}
+
+function continueGame (p1name, p2name, startscore, legsRequired, setsRequired, oldScorecard, closecard, iD, gameStarted, lastUpdated) {
+  natch.Id = iD;
+  natch.gameStarted = gameStarted;
+  natch.lastUpdated = lastUpdated;
+  natch.p1Name = p1name;
+  natch.p2Name = p2name;
+  setsRequired = +setsRequired;
+  legsRequired = +legsRequired;
+  startscore = +startscore;
+  natch.startScore = startscore;
+  natch.legsRequired = legsRequired;
+  natch.setsRequired = setsRequired;
+  natch.p1Score = startscore;
+  natch.p2Score = startscore;
+  if (oldScorecard.length === 0) {
+  } else {
+    oldScorecard.forEach(input => {
+      natch.turncheck(input);
+      if (natch.p1Score === 0 || natch.p2Score === 0) {
+        natch.turncheckClosed(closecard.pop());
+    }
+  });
+}
+
+  currentmatch();
+}
+
+function updateGame () {
+  const p1name = natch.p1Name;
+  const p2name = natch.p2Name;
+  const startscore = natch.startScore;
+  const legsRequired = natch.legsRequired;
+  const setsRequired = natch.setsRequired;
+  const closecard = natch.closeCard;
+  const iD = natch.Id;
+  const gameStarted = natch.gameStarted;
+  const lastUpdated = natch.lastUpdated;
+  const scoreCard = natch.scoreCard;
+  var jsarray = {
+    'Player1 Name': p1name,
+    Player2: p2name,
+    'Sets required': setsRequired,
+    'Legs required per set': legsRequired,
+    'Starting score': startscore,
+    closecard: closecard,
+    id: iD,
+    'Game started': gameStarted,
+    'last updated': lastUpdated,
+    scorecard: scoreCard
+  };
+  var jsonarray = JSON.stringify(jsarray);
+  const response = fetch('/game', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: jsonarray
+  });
+  console.log(response.body);
 }

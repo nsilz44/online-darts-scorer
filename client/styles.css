@@ -21,7 +21,12 @@ body{
 #arrow2{
   display: none;
 }
-
+#inputPracticeName{
+  display: none;
+}
+#dartsBox{
+  display: 'none';
+}
 /* Style the links inside the navigation bar */
 .topnav a {
   float: left;

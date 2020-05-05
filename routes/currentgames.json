@@ -1,1 +1,35 @@
-[]
+[
+    {
+        "Player1 Name": "aa",
+        "Player2": "aaa",
+        "Sets required": 1,
+        "Legs required per set": 1,
+        "Starting score": "301",
+        "closecard": [],
+        "id": "20200505193034",
+        "Game started": "2020-5-5 19:30",
+        "last updated": "",
+        "scorecard": [
+            121,
+            121,
+            121,
+            121
+        ]
+    },
+    {
+        "Player1 Name": "aaqq",
+        "Player2": "aaa",
+        "Sets required": 1,
+        "Legs required per set": 1,
+        "Starting score": "301",
+        "closecard": [],
+        "id": "20200505193250",
+        "Game started": "2020-5-5 19:32",
+        "last updated": "2020-5-5 19:32",
+        "scorecard": [
+            12,
+            111,
+            12
+        ]
+    }
+]

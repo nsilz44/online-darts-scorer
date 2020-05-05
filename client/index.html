@@ -65,9 +65,9 @@
       <div class="row">
         <div class="col-sm"><h6>First to</h6>
           <select id="sets">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
           </select>
           <h6>sets</h6>
         </div>
@@ -92,7 +92,7 @@
     </div>
     <!-- Game created container appears for X01 game-->
     <div class="container" id="game">
-      <h3>First to 1 set out of 5 legs</h3>
+      <h3 id="gameParams"></h3>
       <div class="row">
         <div class="col"><h6 id="p1setswon">0</h6></div>
         <div class="col">SETS WON</div>
@@ -112,14 +112,25 @@
         <div class="col"><h1 id ="score1">501</h1></div>
         <div class="col"></div>
         <div class="col"><h1 id ="score2">501</h1></div>
-      </div>  
-      <input type="text" id="inputscore" ></input>
-      <button type="button" id="submit" onclick="natch.turncheck(inputscore.value)">Submit score</button>
-      <div class="row">
-        <div class="col"><h2 id ="average1">00.00</h2></div>
-        <div class="col"><h2> AVERAGE</h2></div>
-        <div class="col"><h2 id ="average2">00.00</h2></div>
       </div>
+      <div id="inputBox">
+        <input type="text" id="inputscore" ></input>
+        <button type="button" id="submit" onclick="natch.turncheck(inputscore.value)">Submit score</button>
+        <button type="button" id="undoMatch" onclick="undoGame()">Undo throw</button>
+      </div> 
+      <div id="dartsBox">
+        <h3>How Many darts did you use to close</h3>
+        <input type="text" id="inputdarts" ></input>
+        <button type="button" id="submitdarts" onclick="natch.turncheckClosed(inputdarts.value)">Darts closed</button>
+      </div>
+      <div id="gameStats">
+        <div class="row">
+          <div class="col"><h2 id ="average1">00.00</h2></div>
+          <div class="col"><h2> AVERAGE</h2></div>
+          <div class="col"><h2 id ="average2">00.00</h2></div>
+        </div>
+      </div>
+      
     </div>
     <!-- End of game stats -->
     <div>    
@@ -170,12 +181,12 @@
       <div>
         <input type="text" list="playerlistpractice"id="practicename" placeholder="Input name">
         <datalist id="playerlistpractice"></datalist></input></div>
-      <button type="button" id="savePracticeButton" onclick="practiceSaved()"></button>
-    </div>
+      <button type="button" id="savePracticeButton" onclick="practiceSaved()">Click to save Practice</button>
     <!-- Practice stats table -->
     <div class="container" id="practiceStats">
-    <table class="table" id="practiceTable">
-    </table>
+      <table class="table" id="practiceTable">
+      </table>
+    </div>
     </div>
     <div class="container" id="settings">
       
