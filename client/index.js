@@ -62,7 +62,7 @@ class Match {
     }
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + space + today.getHours() + ':' + today.getMinutes();
-    natch.lastUpdated = date; 
+    natch.lastUpdated = date;
     updateGame();
     console.log(this.p1Name, this.p2Name, this.p1Score, this.p2Score, this.p1Legs, this.p2Legs, this.p1Sets, this.p2Sets, this.p1TotalScore,
       this.p2TotalScore, this.p1TotalDarts, this.p2TotalDarts,
