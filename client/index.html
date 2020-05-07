@@ -18,27 +18,27 @@
       <p class="text-center">Online darts scoring</p> 
     </div>
     <!-- Toolbar that can access New match, Continue a match , Current Match , Settings, Practice -->
-    
-    <div class="topnav" id="theTopnav">
-      <a onclick=home() class="active">Home</a>
-      <a onclick=creatematch() >New match</a>
-      <a onclick=continuematch()>Continue match</a>
-      <a onclick=currentmatch()>Current match</a>
-      <a onclick=manageplayers()>Manage players</a>
-      <a onclick=practicefunc()>Practice</a>
-      <a onclick=settings()>Settings</a>
-    </div> 
-    
+    <div class="container">
+      <div class="topnav" id="theTopnav">
+        <a onclick=home() class="active">Home</a>
+        <a onclick=creatematch() >New match</a>
+        <a onclick=continuematch()>Continue match</a>
+        <a onclick=currentmatch()>Current match</a>
+        <a onclick=practicefunc()>Practice</a>
+        <a onclick=manageplayers()>Manage players</a>
+        <a onclick=settings()>Settings</a>
+      </div> 
+    </div>
     <!-- Onload the only part of the page that is available or when a match is finished -->
     <div class="container" id="home">
       <div class="btn-group-vertical btn-group-lg" role="group">
-        <button id="homeButton">Home</button>
-        <button id="createButton">Create match</button>
-        <button id="continueButton">Continue match</button>
-        <button id="currentButton">Current match</button>
-        <button id="practiceButton">Practice</button>
-        <button id="playersButton">Manage Players</button>
-        <button id="settingsButton">Settings</button>
+        <button id="homeButton" onclick=home()>Home</button>
+        <button id="createButton" onclick=creatematch()>Create match</button>
+        <button id="continueButton" onclick=continuematch()>Continue match</button>
+        <button id="currentButton"onclick=currentmatch()>Current match</button>
+        <button id="practiceButton"onclick=manageplayers()>Practice</button>
+        <button id="playersButton"onclick=practicefunc()>Manage Players</button>
+        <button id="settingsButton"onclick=settings()>Settings</button>
       </div> 
     </div>
     
@@ -68,6 +68,9 @@
             <option>1</option>
             <option>2</option>
             <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
           </select>
           <h6>sets</h6>
         </div>
@@ -88,20 +91,37 @@
     </div>
     <!-- Current match container appears after continue a match button is pressed-->
     <div class="container" id="continueMatch">
-
+      <div class="row">
+        <input type="text" list="gameIdList"id="gameId" placeholder="select from these iDs to continue">
+          <datalist id="gameIdList"></datalist></input>
+      </div>
+        <div class="col"><button type="button" id="continueGameSubmit" onclick="continueGameNow(gameId.value)">Continue this match</button>
+        <button type="button" id="gameReset" onclick="resetGameInput()">Reset input</Input></button>
+        </div>
+      <div class="row">
+        <div class="col"><input type="text" id="gameSearchInput" placeholder="Filter by name"></div>
+        <div class="col"><button type="button" id="gameSearch" onclick="searchGames()">Search</button></div>
+      </div>
+      <h3>Current games not finished</h3>
+      <table class="table" id="gameTable">
+      </table>
     </div>
     <!-- Game created container appears for X01 game-->
     <div class="container" id="game">
       <h3 id="gameParams"></h3>
       <div class="row">
+        <div class="col"></div>
         <div class="col"><h6 id="p1setswon">0</h6></div>
         <div class="col">SETS WON</div>
         <div class="col"><h6 id="p2setswon">0</h6></div>
+        <div class="col"></div>
       </div>
       <div class="row">
+        <div class="col"></div>
         <div class="col"><h6 id="p1Legswon">0</h6></div>
         <div class="col"><h6>LEGS WON</h6></div>
         <div class="col"><h6 id="p2Legswon">0</h6></div>
+        <div class="col"></div>
       </div>
       <div class="row">
         <div class="col"><i id="arrow1" class="fas fa-caret-square-right fa-2x"></i><h1 id="name1">Player1</h1></div>
@@ -125,9 +145,46 @@
       </div>
       <div id="gameStats">
         <div class="row">
-          <div class="col"><h2 id ="average1">00.00</h2></div>
-          <div class="col"><h2> AVERAGE</h2></div>
-          <div class="col"><h2 id ="average2">00.00</h2></div>
+          <div class="col"></div>
+          <div class="col"><h5 id ="p1darts">00.00</h5></div>
+          <div class="col"><h5> Darts</h5></div>
+          <div class="col"><h5 id ="p2darts">00.00</h5></div>
+          <div class="col"></div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h5 id ="average1">00.00</h5></div>
+          <div class="col"><h5> Average</h5></div>
+          <div class="col"><h5 id ="average2">00.00</h5></div>
+          <div class="col"></div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h5 id ="p1180s">00.00</h5></div>
+          <div class="col"><h5>180s</h5></div>
+          <div class="col"><h5 id ="p2180s">00.00</h5></div>
+          <div class="col"></div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h5 id ="p1140s">00.00</h5></div>
+          <div class="col"><h5>140s</h5></div>
+          <div class="col"><h5 id ="p2140s">00.00</h5></div>
+          <div class="col"></div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h5 id ="p1100s">00.00</h5></div>
+          <div class="col"><h5>100s</h5></div>
+          <div class="col"><h5 id ="p2100s">00.00</h5></div>
+          <div class="col"></div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h5 id ="p1highestfinish">0</h5></div>
+          <div class="col"><h5>Highest Finish</h5></div>
+          <div class="col"><h5 id ="p2highestfinish">0</h5></div>
+          <div class="col"></div>
         </div>
       </div>
       
@@ -138,12 +195,53 @@
     <!-- Players tab -->
     <!-- New player-->
     <div class="container" id="managePlayers">
+      <div id="homeManagePlayers">
+        <button id="newPlayerbutton" onclick=newplayerbutton()>Create new player</button>
+      <!--
+        <button id="editPlayerButton"onclick=editplayerbutton()>Edit a player</button>
+        <button id="deletePlayerButton"onclick=deleteplayerbutton()>Delete a player</button>
+      -->  
+      </div>
+      <div id="newPlayers">
+        <div class="row">
+          <div class="col"><h5>Forename:</h5><input type="text" id="forename"></input></div>
+          <div class="col"><h5>Surname:</h5><input type="text" id="surname"></input></div>
+          <div class="col"><h5>Nickname:</h5><input type="text" id="nickname"></input></div>
+          <div class="col"><h5>ID:</h5><input type="text" id="idPlayer" readonly></input></div>
+          <div class="col"><button type="button" id="playerSubmit" onclick="createPlayer()">Update/Create Player</button>
+            <button type="button" id="PlayerReset" onclick="resetPlayersInput()">Reset input</Input></button></div>
+        </div>
+      </div>
+      <!--
+        <div id="editplayer">
+        <h6>type player id to edit</h6>
+        <input type="text" list="editlistplayer"id="editidlist" placeholder="Player">
+        <datalist id="editlistplayer"></datalist></input>
+        <button type="button" id="playeredit" onclick="UpdatePlayersInput()">Update Player</button>
+      </div>
+      <div id="editPlayers">
+        <div class="row">
+          <div class="col"><h5>Forename:</h5><input type="text" id="editForename"></input></div>
+          <div class="col"><h5>Surname:</h5><input type="text" id="editSurname"></input></div>
+          <div class="col"><h5>Nickname:</h5><input type="text" id="editNickname"></input></div>
+          <div class="col"><h5>ID:</h5><input type="text" id="editIdPlayer" readonly></input></div>
+          <div class="col"><button type="button" id="playeredit" onclick="UpdatePlayer()">Update Player</button>
+            <button type="button" id="editReset" onclick="resetPlayersInput()">Reset input</Input></button>
+          </div>
+        </div>
+      </div>
+      <div id="deletePlayers">
+          <h6>type player id to delete</h6>
+          <input type="text" list="playerlistdelete"id="deleteinput" placeholder="Player">
+          <datalist id="playerlistdelete"></datalist></input>
+          <div class="col"><button type="button" id="playerDelete" onclick="deletePlayer()">Update/Create Player</button>
+            <button type="button" id="deleteReset" onclick="resetPlayersDelete()">Reset input</Input></button>
+          </div>
+        </div>
+      -->
       <div class="row">
-        <div class="col"><h5>Forename:</h5><input type="text" id="forename"></input></div>
-        <div class="col"><h5>Surname:</h5><input type="text" id="surname"></input></div>
-        <div class="col"><h5>Nickname:</h5><input type="text" id="nickname"></input></div>
-        <div class="col"><h5>ID:</h5><input type="text" id="idPlayer" readonly></input></div>
-        <div class="col"><button type="button" id="playerSubmit" onclick="createUpdatePlayer()">Update/Create Player</button><button type="button" id="PlayerReset" onclick="resetPlayersInput()">Reset input</Input></button></div>
+        <div class="col"><input type="text" id="playerSearchInput" placeholder="Filter by name"></div>
+        <div class="col"><button type="button" id="playerSearch" onclick="searchPlayers()">Search</button></div>
       </div>
     <!-- Table of current players -->
       <table class="table" id="playerTable">
@@ -191,7 +289,7 @@
     <div class="container" id="settings">
       
     </div>
+    <script src="index.js"> </script>
   </body>
-  <script src="index.js"> </script>
   
 </html>

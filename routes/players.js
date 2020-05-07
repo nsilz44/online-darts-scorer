@@ -21,7 +21,26 @@ router
         }
     }));
 router
-    .route('/new')
+    .route('/search')
+    .get((req, res) => {
+        function filterByValue (array, string) {
+            return array.filter(o =>
+                Object.keys(o).some(k => o[k].toString().toLowerCase().includes(string.toLowerCase())));
+        }
+        const keyword = req.query;
+        var value = keyword.find;
+        fs.readFile('./routes/players.json', 'utf8', (err, listOld) => {
+            if (err) {
+                console.log(err);
+            } else {
+                var list = JSON.parse(listOld);
+                var ale = filterByValue(list, value);
+                }
+                res.json(ale);
+        });
+    });
+router
+    .route('/update')
     .post((req, res) => {
         var json = req.body;
         fs.readFile('./routes/players.json', 'utf8', (err, listOld) => {
@@ -30,36 +49,45 @@ router
             } else {
                 var playerList = JSON.parse(listOld);
                 var newPlayer = json;
-                playerList.push(newPlayer);
-                var mol = JSON.stringify(playerList);
+                const result = playerList.filter(item => item.ID !== newPlayer.ID);
+                result.push(newPlayer);
+                var mol = JSON.stringify(result);
                 fs.writeFile('./routes/players.json', mol, (err) => {
                     if (err) {
                         console.log(err);
                     }
                 });
-                res.send(req.body);
+                res.send('woo');
             }
         });
     });
 router
     .route('/delete')
     .post((req, res) => {
-    fs.readFile('./routes/players.json', 'utf8', (err, oldlist) => {
-        if (err) {
-            console.log('File read failed:', err);
-            return;
-        }
-        try {
-            for (id in deleteList) {
-                var index = oldlist.findIndex(a => a.id === id);
-                if (index > -1) {
-                    oldlist.splice(index, 1);
-                }
+        fs.readFile('./routes/players.json', 'utf8', (err, oldlist) => {
+            if (err) {
+                console.log('File read failed:', err);
+                return;
             }
-        } catch (err) {
-            console.log(err);
-        }
-    });
+            try {
+                var json = req.body;
+                var deleteList = json;
+                deleteList.forEach(a => {
+                    var index = oldlist.findIndex(a.id);
+                    if (index > -1) {
+                        oldlist.splice(index, 1);
+                    }
+                });
+                var mol = JSON.stringify(oldlist);
+                fs.writeFile('./routes/players.json', mol, (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        });
     });
 
 module.exports = router;

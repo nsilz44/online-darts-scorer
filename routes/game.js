@@ -26,6 +26,38 @@ router
                 res.send(req.body);
             }
         });
-    });
+    })
+    .get((_req, res) =>
+    fs.readFile('./routes/currentgames.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log('File read failed:', err);
+            return;
+        }
+        try {
+            var playerList = jsonString;
+            res.json(playerList);
+        } catch (err) {
+            console.error(err);
+        }
+    }));
 
+router
+    .route('/search')
+    .get((req, res) => {
+        function filterByValue (array, string) {
+            return array.filter(o =>
+                Object.keys(o).some(k => o[k].toString().toLowerCase().includes(string.toLowerCase())));
+        }
+        const keyword = req.query;
+        var value = keyword.find;
+        fs.readFile('./routes/currentgames.json', 'utf8', (err, listOld) => {
+            if (err) {
+                console.log(err);
+            } else {
+                var list = JSON.parse(listOld);
+                var ale = filterByValue(list, value);
+                }
+                res.json(ale);
+            });
+        });
 module.exports = router;

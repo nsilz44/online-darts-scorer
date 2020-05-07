@@ -38,6 +38,8 @@ class Match {
     this.Id = '';
     this.gameStarted = '';
     this.lastUpdated = '';
+    this.p1HighestFinish = 0;
+    this.p2HighestFinish = 0;
   }
 
   updateScores () {
@@ -51,6 +53,16 @@ class Match {
     document.getElementById('p2setswon').innerText = this.p2Sets;
     document.getElementById('p1Legswon').innerText = this.p1Legs;
     document.getElementById('p2Legswon').innerText = this.p2Legs;
+    document.getElementById('p1darts').innerText = this.p1LegDarts;
+    document.getElementById('p2darts').innerText = this.p2LegDarts;
+    document.getElementById('p1180s').innerText = this.p1180s;
+    document.getElementById('p2180s').innerText = this.p2180s;
+    document.getElementById('p1140s').innerText = this.p1140s;
+    document.getElementById('p2140s').innerText = this.p2140s;
+    document.getElementById('p1100s').innerText = this.p1100s;
+    document.getElementById('p2100s').innerText = this.p2100s;
+    document.getElementById('p1highestfinish').innerText = this.p1HighestFinish;
+    document.getElementById('p2highestfinish').innerText = this.p2HighestFinish;
     document.getElementById('inputscore').value = '';
     document.getElementById('inputscore').focus();
     if (this.turn === 1) {
@@ -63,30 +75,9 @@ class Match {
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + space + today.getHours() + ':' + today.getMinutes();
     natch.lastUpdated = date;
-    updateGame();
-    console.log(this.p1Name, this.p2Name, this.p1Score, this.p2Score, this.p1Legs, this.p2Legs, this.p1Sets, this.p2Sets, this.p1TotalScore,
-      this.p2TotalScore, this.p1TotalDarts, this.p2TotalDarts,
-      this.p1LegDarts
-      , this.p2LegDarts
-      , this.p1Average
-      , this.p2Average
-     , this.p1180s
-     , this.p2180s
-     , this.p1140s
-     , this.p2140s
-     , this.p1100s
-     , this.p2100s
-     , this.startScore
-     , this.setsRequired
-     , this.legsRequired
-     , this.legStart
-     , this.SetStart
-     , this.turn
-     , this.scoreCard
-     , this.closeCard
-      , this.Id
-      , this.gameStarted
-      , this.lastUpdated);
+    if (this.iD !== '') {
+      updateGame();
+    }
   }
 
   // Checks whos turn it is
@@ -145,6 +136,9 @@ class Match {
       this.p1Score = this.p1Score - input;
       this.p1TotalScore = this.p1TotalScore + input;
       this.scoreCard.push(input);
+      if (input > this.p1HighestFinish) {
+        this.p1HighestFinish = input;
+      }
       document.getElementById('inputBox').style.display = 'none';
       document.getElementById('dartsBox').style.display = 'block';
     }
@@ -220,6 +214,9 @@ class Match {
       this.p2Score = this.p2Score - input;
       this.p2TotalScore = this.p2TotalScore + input;
       this.scoreCard.push(input);
+      if (input > this.p2HighestFinish) {
+        this.p2HighestFinish = input;
+      }
       document.getElementById('inputBox').style.display = 'none';
       document.getElementById('dartsBox').style.display = 'block';
     }
@@ -312,6 +309,31 @@ function continuematch () {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'none';
+  document.getElementById('gameSearchInput').value = '';
+  loadTable(document.getElementById('gameTable'), '/game');
+  var idList = document.getElementById('gameIdList');
+  function loadGamelist (list) {
+    clearPlayerslist(list);
+    async function makelist () {
+      const response = await fetch('/game');
+      const result = await response.json();
+      const results = JSON.parse(result);
+      return results;
+    }
+    makelist()
+      .then(results => {
+        var delta = [];
+        results.forEach(element => {
+          delta.push(element.id);
+        });
+        delta.forEach(item => {
+          var option = document.createElement('option');
+          option.value = item;
+          list.appendChild(option);
+        });
+      });
+  };
+  loadGamelist(idList);
 }
 function currentmatch () {
   document.getElementById('home').style.display = 'none';
@@ -351,8 +373,13 @@ function manageplayers () {
   document.getElementById('practice').style.display = 'none';
   document.getElementById('settings').style.display = 'none';
   document.getElementById('managePlayers').style.display = 'block';
+  document.getElementById('homeManagePlayers').style.display = 'block';
+  document.getElementById('newPlayers').style.display = 'none';
+  //document.getElementById('editPlayers').style.display = 'none';
+  //document.getElementById('deletePlayers').style.display = 'none';
+  //document.getElementById('editplayer').style.display = 'none';
   resetPlayersInput();
-  loadPlayerTable(document.getElementById('playerTable'));
+  loadTable(document.getElementById('playerTable'), '/players');
   }
 
 const natch = new Match('p1name', 'p2name', 501);
@@ -421,11 +448,11 @@ function matchmaker () {
 
 const practice = new Practice();
 
-function loadPlayerTable (tableId) {
-  clearPlayersTable(tableId);
+function loadTable (tableId, route) {
+  clearTable(tableId);
   async function playersTable () {
     try {
-      const response = await fetch('/players');
+      const response = await fetch(route);
       const result = await response.json();
       const results = JSON.parse(result);
       return results;
@@ -475,7 +502,7 @@ function deletePlayer (ids) {
   deletePlayerSuccess()
     .then(alert('Successful Deletion'));
   }
-function createUpdatePlayer () {
+function createPlayer () {
   var firstname = document.getElementById('forename').value;
   var secondname = document.getElementById('surname').value;
   var nickname = document.getElementById('nickname').value;
@@ -484,7 +511,7 @@ function createUpdatePlayer () {
   async function createPlayerSuccess () {
     try {
       var jsonData = JSON.stringify(json);
-      await fetch('/players/new', {
+      await fetch('/players/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -516,10 +543,16 @@ function resetPlayersInput () {
   document.getElementById('forename').value = '';
   document.getElementById('surname').value = '';
   document.getElementById('nickname').value = '';
+  //document.getElementById('editidlist').value = '';
+  //document.getElementById('editForename').value = '';
+  //document.getElementById('editSurname').value = '';
+  //document.getElementById('editNickname').value = '';
+  //document.getElementById('editIdPlayer').value = '';
+  //document.getElementById('deleteinput').value = '';
   var newId = dateToId();
   document.getElementById('idPlayer').value = newId;
 }
-function clearPlayersTable (Parent) {
+function clearTable (Parent) {
   while (Parent.hasChildNodes()) {
      Parent.removeChild(Parent.firstChild);
   }
@@ -559,7 +592,7 @@ function practiceSaved () {
         body: jsonData
       });
       const result = await response.json();
-      const results = JSON.parse(result);
+      const results = result;
       return results.Name;
     } catch (e) {
       alert(e);
@@ -572,14 +605,14 @@ function practiceSaved () {
     });
   function getPractice (name) {
     async function gotPractice () {
-      const response = await fetch('/practice/?name=' + name);
+      const response = await fetch('/practice?name=' + name);
       const body = await response.json();
       var results = JSON.parse(body);
       return results;
     }
     gotPractice()
       .then(results => {
-        loadPlayerTable(document.getElementById('practiceTable'));
+        generateTable(document.getElementById('practiceTable'), results);
       });
   }
 }
@@ -645,20 +678,21 @@ function continueGame (p1name, p2name, startscore, legsRequired, setsRequired, o
   setsRequired = +setsRequired;
   legsRequired = +legsRequired;
   startscore = +startscore;
+  const scoreCard = oldScorecard;
   natch.startScore = startscore;
   natch.legsRequired = legsRequired;
   natch.setsRequired = setsRequired;
   natch.p1Score = startscore;
   natch.p2Score = startscore;
-  if (oldScorecard.length === 0) {
+  if (scoreCard.length === 0) {
   } else {
-    oldScorecard.forEach(input => {
+    scoreCard.forEach(input => {
       natch.turncheck(input);
       if (natch.p1Score === 0 || natch.p2Score === 0) {
         natch.turncheckClosed(closecard.pop());
     }
   });
-}
+  }
 
   currentmatch();
 }
@@ -675,8 +709,8 @@ function updateGame () {
   const lastUpdated = natch.lastUpdated;
   const scoreCard = natch.scoreCard;
   var jsarray = {
-    'Player1 Name': p1name,
-    Player2: p2name,
+    Player1Name: p1name,
+    Player2Name: p2name,
     'Sets required': setsRequired,
     'Legs required per set': legsRequired,
     'Starting score': startscore,
@@ -694,5 +728,136 @@ function updateGame () {
     },
     body: jsonarray
   });
-  console.log(response.body);
+  ;
+}
+function search (route, params) {
+  async function getSearch () {
+    const response = fetch(route.concat('?find=', params));
+    const result = await response.body;
+    return result;
+  }
+  getSearch()
+    .then(results => {
+      return results;
+    });
+}
+function continueGameNow (id) {
+  async function continued () {
+    const response = await fetch('game/search?find=' + id);
+    const result = await response.json();
+    console.log(result);
+    const results = result[0];
+    return results;
+  }
+  continued()
+    .then(results => {
+      var p1Name = results.Player1Name;
+      var p2Name = results.Player2Name;
+      var setsreq = results['Sets required'];
+      var legsreq = results['Legs required per set'];
+      var startscore = results['Starting score'];
+      var closecard = results.closecard;
+      var id = results.id;
+      var started = results['Game started'];
+      var lastUpdated = results['last updated'];
+      const oldScorecard = results.scorecard;
+      continueGame(p1Name, p2Name, startscore, legsreq, setsreq, oldScorecard, closecard, id, started, lastUpdated);
+    });
+}
+
+function searchGames () {
+  var params = document.getElementById('gameSearchInput').value;
+  var searchparams = params;
+  var result = search('game/search', searchparams);
+  var tableId = document.getElementById('gameTable');
+  clearTable(tableId);
+  const table = tableId;
+  if (result === []) {
+    return;
+  }
+  const data = Object.keys(result[0]);
+  generateTableHead(table, data);
+  generateTable(table, result);
+}
+
+function clickfunc () {
+  // Here, `this` refers to the element the event was hooked on
+  console.log('clicked');
+}
+
+function newplayerbutton () {
+  document.getElementById('homeManagePlayers').style.display = 'none';
+  document.getElementById('newPlayers').style.display = 'block';
+  //document.getElementById('editPlayers').style.display = 'none';
+  //document.getElementById('deletePlayers').style.display = 'none';
+  //document.getElementById('editplayer').style.display = 'none';
+}
+
+function editplayerbutton () {
+  document.getElementById('homeManagePlayers').style.display = 'none';
+  document.getElementById('newPlayers').style.display = 'none';
+  document.getElementById('editPlayers').style.display = 'none';
+  document.getElementById('deletePlayers').style.display = 'none';
+  document.getElementById('editplayer').style.display = 'block';
+  loadPlayerlist2(document.getElementById('editlistplayer'));
+}
+
+function deleteplayerbutton () {
+  document.getElementById('homeManagePlayers').style.display = 'none';
+  document.getElementById('newPlayers').style.display = 'none';
+  document.getElementById('editPlayers').style.display = 'none';
+  document.getElementById('deletePlayers').style.display = 'block';
+  document.getElementById('editplayer').style.display = 'none';
+}
+function loadPlayerlist2 (list) {
+  clearPlayerslist(list);
+  async function makelist () {
+    const response = await fetch('/players');
+    const result = await response.json();
+    const results = JSON.parse(result);
+    return results;
+  }
+  makelist()
+    .then(results => {
+      var delta = [];
+      results.forEach(element => {
+        element.name = element.ID;
+        delta.push(element.name);
+      });
+      delta.forEach(item => {
+        var option = document.createElement('option');
+        option.value = item;
+        list.appendChild(option);
+      });
+    });
+}
+
+function UpdatePlayersInput () {
+  var id = document.getElementById('editidlist').value;
+  async function playyertoupdate () {
+    const response = fetch('players/search'.concat('?find=', id));
+    const result = await response.body;
+    return result;
+  }
+  var a = playyertoupdate()
+    .then(results => {
+      return results;
+    });
+    console.log(a);
+}
+
+function searchPlayers () {
+  var params = document.getElementById('playerSearchInput').value;
+  console.log(params);
+  var searchparams = params;
+  var result = search('/players/search', searchparams);
+  var tableId = document.getElementById('playerTable');
+  clearTable(tableId);
+  const table = tableId;
+  if (result === []) {
+    return;
+  }
+  const data = Object.keys(result[0]);
+  generateTableHead(table, data);
+  generateTable(table, result);
 }
