@@ -375,9 +375,9 @@ function manageplayers () {
   document.getElementById('managePlayers').style.display = 'block';
   document.getElementById('homeManagePlayers').style.display = 'block';
   document.getElementById('newPlayers').style.display = 'none';
-  //document.getElementById('editPlayers').style.display = 'none';
-  //document.getElementById('deletePlayers').style.display = 'none';
-  //document.getElementById('editplayer').style.display = 'none';
+  // document.getElementById('editPlayers').style.display = 'none';
+  // document.getElementById('deletePlayers').style.display = 'none';
+  // document.getElementById('editplayer').style.display = 'none';
   resetPlayersInput();
   loadTable(document.getElementById('playerTable'), '/players');
   }
@@ -543,12 +543,12 @@ function resetPlayersInput () {
   document.getElementById('forename').value = '';
   document.getElementById('surname').value = '';
   document.getElementById('nickname').value = '';
-  //document.getElementById('editidlist').value = '';
-  //document.getElementById('editForename').value = '';
-  //document.getElementById('editSurname').value = '';
-  //document.getElementById('editNickname').value = '';
-  //document.getElementById('editIdPlayer').value = '';
-  //document.getElementById('deleteinput').value = '';
+  // document.getElementById('editidlist').value = '';
+  // document.getElementById('editForename').value = '';
+  // document.getElementById('editSurname').value = '';
+  // document.getElementById('editNickname').value = '';
+  // document.getElementById('editIdPlayer').value = '';
+  // document.getElementById('deleteinput').value = '';
   var newId = dateToId();
   document.getElementById('idPlayer').value = newId;
 }
@@ -732,9 +732,10 @@ function updateGame () {
 }
 function search (route, params) {
   async function getSearch () {
-    const response = fetch(route.concat('?find=', params));
-    const result = await response.body;
-    return result;
+    const response = await fetch(route.concat('?find=', params));
+    const result = await response.json();
+    const results = (result);
+    return results;
   }
   getSearch()
     .then(results => {
@@ -772,6 +773,7 @@ function searchGames () {
   var tableId = document.getElementById('gameTable');
   clearTable(tableId);
   const table = tableId;
+  console.log(result);
   if (result === []) {
     return;
   }
@@ -788,9 +790,9 @@ function clickfunc () {
 function newplayerbutton () {
   document.getElementById('homeManagePlayers').style.display = 'none';
   document.getElementById('newPlayers').style.display = 'block';
-  //document.getElementById('editPlayers').style.display = 'none';
-  //document.getElementById('deletePlayers').style.display = 'none';
-  //document.getElementById('editplayer').style.display = 'none';
+  // document.getElementById('editPlayers').style.display = 'none';
+  // document.getElementById('deletePlayers').style.display = 'none';
+  // document.getElementById('editplayer').style.display = 'none';
 }
 
 function editplayerbutton () {
@@ -861,3 +863,4 @@ function searchPlayers () {
   generateTableHead(table, data);
   generateTable(table, result);
 }
+home();

@@ -13,7 +13,7 @@ router
                 Object.keys(o).some(k => o[k].toString().toLowerCase().includes(string.toLowerCase())));
         }
         const keyword = req.query;
-        var value = keyword.name;
+        var value = keyword.find;
         fs.readFile('./routes/practice.json', 'utf8', (err, listOld) => {
             if (err) {
                 console.log(err);

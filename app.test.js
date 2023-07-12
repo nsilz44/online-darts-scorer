@@ -23,7 +23,7 @@ describe('test players service', () => {
     test('GET /search returns JSON', () => {
         return request(app)
               .get('players/search?find=steve')
-            .expect('Content-type', 'application/json');
+            .expect('Content-type', /json/);
     });
 });
 

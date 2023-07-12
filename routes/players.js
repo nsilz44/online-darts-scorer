@@ -35,8 +35,9 @@ router
             } else {
                 var list = JSON.parse(listOld);
                 var ale = filterByValue(list, value);
+                var beer = JSON.stringify(ale);
                 }
-                res.json(ale);
+                res.json(beer);
         });
     });
 router

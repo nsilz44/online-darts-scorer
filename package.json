@@ -18,6 +18,7 @@
     "jest": "^25.5.2"
   },
   "scripts": {
+    "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest",
     "start": "node server.js",
     "dev": "nodemon index.js"
